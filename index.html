@@ -1,0 +1,2928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loca Brands — Brand Building Studio</title>
+<meta name="description" content="Loca Brands is a senior-led brand building studio. We build the Founder, the Brand, the Demand Engine.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Fredoka:wght@600;700&family=Poppins:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<script type="importmap">
+{ "imports": { "lenis": "https://unpkg.com/lenis@1.3.19/dist/lenis.mjs" } }
+</script>
+<style>
+  :root {
+    --bg:            #ffffff;
+    --bg-alt:        #fffbeb;
+    --bg-panel-2:    #ffffff;
+    --ink:           #58050b;
+    --ink-soft:      rgba(88,5,11,0.75);
+    --ink-faint:     rgba(88,5,11,0.48);
+    --red:           #e71120;
+    --red-dark:      #b30d19;
+    --yellow:        #fccb00;
+    --yellow-dark:   #caa200;
+    --line:          rgba(88,5,11,0.12);
+    --card-border:   rgba(88,5,11,0.09);
+    --shadow:        0 20px 60px rgba(88,5,11,0.10);
+    --ease-entrance: cubic-bezier(0.2, 0, 0, 1);
+
+    --hero-dark:        #33060b;
+    --hero-ink:         #ffffff;
+    --hero-ink-soft:    rgba(255,255,255,0.72);
+  }
+
+  * { margin: 0; box-sizing: border-box; }
+
+  html { font-size: 16px; scroll-behavior: auto; }
+  @media (max-width: 1920px) { html { font-size: 0.833333vw; } }
+  @media (max-width: 1440px) { html { font-size: 1.111111vw; } }
+  @media (max-width: 1024px) { html { font-size: 1.5625vw;   } }
+  @media (max-width: 640px)  { html { font-size: 4.444444vw; } }
+
+  a { text-decoration: none; color: inherit; }
+  button { font: inherit; border: none; background: none; cursor: pointer; }
+  ul { padding: 0; }
+
+  body {
+    font-family: "Poppins", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  .grain-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    animation: grain-shift 8s steps(6) infinite;
+  }
+  @keyframes grain-shift {
+    0%   { transform: translate(0, 0); }
+    20%  { transform: translate(-2%, 2%); }
+    40%  { transform: translate(2%, -1%); }
+    60%  { transform: translate(-1%, -2%); }
+    80%  { transform: translate(1%, 2%); }
+    100% { transform: translate(0, 0); }
+  }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.75rem 1.5rem;
+    opacity: 0;
+    transform: translateY(-0.75rem);
+    transition: opacity 700ms var(--ease-entrance), transform 700ms var(--ease-entrance);
+  }
+  @media (min-width: 640px) { .nav { padding: 2.5rem 3.5rem; } }
+  @media (min-width: 1280px) { .nav { padding: 2.75rem 4.5rem; } }
+  .nav.is-visible { opacity: 1; transform: translateY(0); }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 9999px;
+    padding: 0.5rem 0.5rem 0.5rem 1.3rem;
+    box-shadow: 0 10px 24px rgba(88,5,11,0.07);
+  }
+  .topbar-brand {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  @media (min-width: 640px) { .topbar-brand { font-size: 0.9rem; } }
+  .topbar-brand sup { font-size: 0.6em; }
+
+  .topbar-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    height: 2.25rem;
+    padding: 0 1.15rem;
+    border-radius: 9999px;
+    background: var(--ink);
+    color: #ffffff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background 200ms var(--ease-entrance), transform 200ms var(--ease-entrance);
+  }
+  @media (min-width: 640px) { .topbar-cta { height: 2.5rem; padding: 0 1.4rem; font-size: 0.84rem; } }
+  .topbar-cta:hover { background: var(--red); transform: translateY(-1px); }
+
+  .topbar-dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--yellow);
+    flex-shrink: 0;
+  }
+  .nav::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgba(255,255,255,0);
+    box-shadow: 0 1px 0 transparent;
+    transition: background 300ms var(--ease-entrance), box-shadow 300ms var(--ease-entrance);
+  }
+  .nav.nav--scrolled::before {
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 1px 0 var(--line);
+  }
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .brand-mark {
+    font-family: "Fredoka", sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.25rem, 2vw, 1.6rem);
+    color: var(--red);
+    letter-spacing: 0.01em;
+    -webkit-text-stroke: 1.1px var(--ink);
+    text-stroke: 1.1px var(--ink);
+    filter: drop-shadow(1.5px 2px 0 rgba(88,5,11,0.3));
+    transform: rotate(-3deg);
+    display: inline-block;
+  }
+
+  .brand-tagline {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  @media (min-width: 640px) { .brand-tagline { font-size: 1rem; } }
+
+  .wm-o {
+    display: inline-block;
+    width: 0.62em;
+    height: 0.62em;
+    border-radius: 50%;
+    background: var(--red);
+    -webkit-text-stroke: 0;
+    vertical-align: -0.03em;
+    margin: 0 0.03em;
+  }
+
+  .nav-links {
+    display: none;
+    align-items: center;
+    gap: clamp(1.1rem, 2vw, 2rem);
+    font-size: 0.94rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  @media (min-width: 800px) { .nav-links { display: flex; } }
+  .nav-links a {
+    position: relative;
+    padding-bottom: 3px;
+    transition: opacity 150ms var(--ease-entrance);
+  }
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--ink);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 250ms var(--ease-entrance);
+  }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-links a:hover { opacity: 0.75; }
+
+  .btn-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.6rem;
+    border-radius: 9999px;
+    background: var(--yellow);
+    padding: 0 1.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    box-shadow: 0 12px 28px rgba(252,203,0,0.35);
+    transition: background 200ms var(--ease-entrance), transform 200ms var(--ease-entrance);
+  }
+  @media (min-width: 640px) { .btn-pill { height: 2.8rem; padding: 0 1.5rem; font-size: 0.92rem; } }
+  .btn-pill:hover { background: var(--yellow-dark); transform: translateY(-1px); }
+  .btn-pill:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(252,203,0,0.45); }
+
+  /* ---------- Scroll stack / parallax zoom-out sections ---------- */
+  .stack { position: relative; }
+
+  .panel-wrap { position: relative; height: 200vh; }
+  .panel-wrap.is-last { height: 100vh; }
+  /* Extra scroll distance while this panel stays pinned, giving room to scrub
+     the carousel horizontally via scroll position before the page moves on. */
+  .panel-wrap--scrub { height: 340vh; }
+
+  .panel {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-align: center;
+    padding: 6.5rem 1.25rem 4rem;
+    background: var(--panel-bg, var(--bg));
+    will-change: transform, opacity;
+    transform-origin: center center;
+  }
+  @media (min-width: 640px) { .panel { padding: 7rem 2.5rem 4.5rem; } }
+  .panel:not(.hero-panel) { box-shadow: 0 -40px 90px rgba(88,5,11,0.07); }
+
+  .panel-index {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1.25rem;
+    z-index: 2;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--red);
+  }
+  @media (min-width: 640px) { .panel-index { right: 2.25rem; bottom: 1.75rem; font-size: 0.85rem; } }
+
+  /* ---------- Hero ---------- */
+  /* flex-start (not center) so tall heading content can never overflow upward under the fixed nav */
+  .hero-panel { justify-content: flex-start; padding: clamp(9rem, 24vh, 12rem) 1.25rem 4rem; }
+  @media (min-width: 640px) { .hero-panel { padding: clamp(9.5rem, 22vh, 12.5rem) 2.5rem 4.5rem; } }
+
+  .hero-blob {
+    position: absolute;
+    z-index: 0;
+    width: 46rem;
+    height: 46rem;
+    border-radius: 50%;
+    right: -16rem;
+    top: -10rem;
+    background: rgba(252,203,0,0.16);
+    pointer-events: none;
+    animation: blob-drift 22s ease-in-out infinite;
+  }
+  @keyframes blob-drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%      { transform: translate(-2.5rem, 1.75rem) scale(1.08); }
+    66%      { transform: translate(1.75rem, -1.5rem) scale(0.95); }
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: opacity 700ms var(--ease-entrance), transform 700ms var(--ease-entrance);
+  }
+  @media (min-width: 640px) { .eyebrow { font-size: 0.78rem; } }
+  .eyebrow.is-visible { opacity: 1; transform: translateY(0); }
+  .eyebrow::before { content: ""; width: 0.4rem; height: 0.4rem; border-radius: 50%; background: var(--red); }
+
+  .hero-grid {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 76rem;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .hero-copy { max-width: 34rem; }
+
+  .hero-heading {
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: clamp(2.5rem, 4.6vw, 3.85rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .hero-heading strong { display: block; font-weight: 800; margin-top: 0.2em; }
+
+  .hero-desc {
+    margin-top: 2.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .hero-desc p {
+    font-family: "Lora", serif;
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    max-width: 32rem;
+  }
+  @media (min-width: 640px) { .hero-desc p { font-size: 1.1rem; } }
+  .hero-desc p strong { font-weight: 600; color: var(--ink); font-style: normal; }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.5rem;
+    padding: 0 2.25rem;
+    border: 1.6px solid var(--ink);
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: transparent;
+    margin-top: 2.75rem;
+    transition: background 220ms var(--ease-entrance), color 220ms var(--ease-entrance), transform 220ms var(--ease-entrance);
+  }
+  .btn-outline:hover { background: var(--ink); color: var(--yellow); transform: translateY(-2px); }
+  .btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(88,5,11,0.25); }
+
+  /* Positioned against the hero panel's own fixed 100vh box (not the text column),
+     so sticker placement never depends on how tall the heading/copy happens to be. */
+  .hero-stickers {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .sticker {
+    position: absolute;
+    filter: drop-shadow(0 14px 22px rgba(88,5,11,0.2));
+  }
+  .sticker--planet {
+    width: clamp(160px, 12vw, 220px);
+    top: 9.5rem;
+    right: clamp(3%, 8vw, 9rem);
+    transform: rotate(-9deg);
+    animation: sticker-float-a 6.5s ease-in-out infinite;
+  }
+  .sticker--vinyl {
+    width: clamp(160px, 13vw, 230px);
+    bottom: 3rem;
+    right: clamp(2%, 4vw, 5rem);
+    transform: rotate(7deg);
+    animation: sticker-float-b 7.5s ease-in-out infinite;
+  }
+  .sticker svg { display: block; width: 100%; height: auto; }
+
+  .sticker-arc-text {
+    font-family: "Fredoka", sans-serif;
+    font-weight: 700;
+    fill: var(--yellow);
+    stroke: var(--ink);
+    stroke-width: 2.5px;
+    paint-order: stroke fill;
+  }
+  .sticker-main-text {
+    font-family: "Fredoka", sans-serif;
+    font-weight: 700;
+    fill: var(--red);
+    stroke: var(--ink);
+    stroke-width: 3px;
+    paint-order: stroke fill;
+  }
+  .vinyl-ring-text {
+    font-family: "Fredoka", sans-serif;
+    font-weight: 600;
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    fill: #ffffff;
+  }
+  .vinyl-arc-text {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 6.5px;
+    letter-spacing: 0.12em;
+    fill: #ffffff;
+  }
+
+  @keyframes sticker-float-a {
+    0%, 100% { transform: rotate(-9deg) translateY(0); }
+    50%      { transform: rotate(-7deg) translateY(-10px); }
+  }
+  @keyframes sticker-float-b {
+    0%, 100% { transform: rotate(7deg) translateY(0); }
+    50%      { transform: rotate(9deg) translateY(8px); }
+  }
+
+  /* Below this width, hero-copy runs full width, so the stickers would sit on top of
+     the text rather than beside it — hide them rather than fight for the same space. */
+  @media (max-width: 900px) {
+    .hero-stickers { display: none; }
+  }
+  @media (max-width: 480px) {
+    .hero-heading { font-size: clamp(2rem, 9vw, 2.6rem); }
+    .btn-outline { width: 100%; }
+  }
+
+  /* ---------- Services showcase (draggable carousel) ---------- */
+  .showcase-panel { padding: 6.5rem 0 4rem; }
+  @media (min-width: 640px) { .showcase-panel { padding: 7rem 0 4.5rem; } }
+
+  .showcase-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+    text-align: left;
+  }
+  @media (min-width: 640px) { .showcase-inner { padding: 0 2.5rem; } }
+
+  .showcase-head {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+  @media (min-width: 800px) {
+    .showcase-head { flex-direction: row; justify-content: space-between; align-items: flex-end; }
+  }
+
+  .showcase-heading {
+    margin-top: 0.6rem;
+    font-family: "Archivo Black", sans-serif;
+    font-size: 2rem;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--hero-ink);
+  }
+  @media (min-width: 640px)  { .showcase-heading { font-size: 2.5rem; } }
+  @media (min-width: 1024px) { .showcase-heading { font-size: 2.9rem; } }
+  .showcase-heading .accent { color: var(--red); }
+
+  .showcase-head-right { max-width: 22rem; display: flex; flex-direction: column; gap: 1.25rem; }
+  @media (min-width: 800px) { .showcase-head-right { align-items: flex-end; text-align: right; } }
+  .showcase-sub {
+    font-family: "Lora", serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--hero-ink-soft);
+  }
+
+  .showcase-nav { display: flex; gap: 0.6rem; }
+  .carousel-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.06);
+    color: var(--hero-ink);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 200ms var(--ease-entrance), border-color 200ms var(--ease-entrance), transform 200ms var(--ease-entrance);
+  }
+  .carousel-btn:hover { background: var(--red); border-color: var(--red); transform: translateY(-2px); }
+
+  .carousel-track-wrap { position: relative; margin-top: 3rem; }
+
+  .carousel-track {
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding: 0.5rem 1.25rem 1rem;
+    margin: 0 -1.25rem;
+    cursor: grab;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    user-select: none;
+    touch-action: pan-y;
+  }
+  @media (min-width: 640px) { .carousel-track { padding: 0.5rem 2.5rem 1rem; margin: 0 -2.5rem; } }
+  .carousel-track::-webkit-scrollbar { display: none; }
+  .carousel-track.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+
+  .service-slide {
+    flex: 0 0 auto;
+    width: 15.5rem;
+    scroll-snap-align: center;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 1.25rem;
+    padding: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform 350ms var(--ease-entrance), border-color 350ms var(--ease-entrance), background 350ms var(--ease-entrance);
+  }
+  @media (min-width: 640px) { .service-slide { width: 17rem; padding: 1.25rem; } }
+  .service-slide.is-active {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(231,17,32,0.4);
+    transform: translateY(-0.5rem) scale(1.02);
+  }
+
+  .slide-tag {
+    align-self: flex-start;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--hero-ink-soft);
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 9999px;
+    padding: 0.3rem 0.7rem;
+  }
+
+  .slide-art {
+    margin-top: 0.9rem;
+    height: 8rem;
+    border-radius: 0.9rem;
+    background: var(--hero-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .slide-art svg { width: 3.4rem; height: 3.4rem; }
+  .slide-art--1 { background: var(--red); }
+  .slide-art--2 { background: var(--yellow); }
+  .slide-art--3 { background: var(--hero-dark); }
+  .slide-art--4 { background: var(--red); }
+  .slide-art--5 { background: var(--yellow); }
+  .slide-art--6 { background: var(--hero-dark); }
+
+  .service-slide h3 {
+    margin-top: 1rem;
+    font-family: "Archivo Black", sans-serif;
+    font-size: 1.05rem;
+    color: var(--hero-ink);
+    letter-spacing: -0.01em;
+  }
+  .service-slide p {
+    margin-top: 0.5rem;
+    font-family: "Lora", serif;
+    font-size: 0.86rem;
+    line-height: 1.55;
+    color: var(--hero-ink-soft);
+    flex: 1;
+  }
+  .slide-more {
+    margin-top: 1rem;
+    align-self: flex-end;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--red);
+    color: #fff;
+    font-size: 1rem;
+    transition: transform 200ms var(--ease-entrance), background 200ms var(--ease-entrance);
+  }
+  .slide-more:hover { background: var(--red-dark); transform: translate(2px,-2px); }
+
+  .drag-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.92);
+    color: var(--ink);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    pointer-events: none;
+    opacity: 0.9;
+    transition: opacity 400ms var(--ease-entrance);
+    animation: drag-pulse 2.2s ease-in-out infinite;
+  }
+  .drag-hint.is-hidden { opacity: 0; }
+  @keyframes drag-pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.08); }
+  }
+
+  /* ---------- Content blocks ---------- */
+  .content-block {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 46rem;
+  }
+  .content-block--wide { max-width: 68rem; }
+
+  /* Premium framed container per section, with a small brand-red dot echoing the wordmark's "O" */
+  .section-card {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 2rem;
+    box-shadow: 0 30px 80px rgba(88,5,11,0.09);
+    padding: 2.75rem 1.5rem;
+  }
+  @media (min-width: 640px)  { .section-card { padding: 3.25rem 2.75rem; } }
+  @media (min-width: 1024px) { .section-card { padding: 3.75rem 3.5rem; } }
+  .section-card--soft { background: var(--bg-alt); }
+  .section-card::before {
+    content: "";
+    position: absolute;
+    top: -0.55rem;
+    left: 2.25rem;
+    width: 1.05rem;
+    height: 1.05rem;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 6px 16px rgba(231,17,32,0.35);
+  }
+
+  /* Oversized outline circle watermark, echoing the brand's red-dot wordmark motif */
+  .brand-mark-deco {
+    position: absolute;
+    width: 24rem;
+    height: 24rem;
+    border-radius: 50%;
+    border: 1.5px solid rgba(231,17,32,0.12);
+    pointer-events: none;
+    z-index: 0;
+    animation: brand-float 18s ease-in-out infinite;
+  }
+  .brand-mark-deco--tr { top: -7rem; right: -7rem; animation-duration: 19s; }
+  .brand-mark-deco--bl { bottom: -7rem; left: -7rem; animation-duration: 23s; animation-delay: -4s; }
+  .brand-mark-deco--tl { top: -7rem; left: -7rem; animation-duration: 21s; animation-delay: -9s; }
+  .brand-mark-deco--br { bottom: -7rem; right: -7rem; animation-duration: 25s; animation-delay: -14s; }
+  @keyframes brand-float {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.65; }
+    50%      { transform: translate(1.25rem, -1.5rem) scale(1.1); opacity: 1; }
+  }
+
+  /* ---------- Decorative duotone folk-mask art (background only, never the hero) ---------- */
+  .section-mask {
+    position: absolute;
+    z-index: 0;
+    width: clamp(5.5rem, 9vw, 8.5rem);
+    height: auto;
+    pointer-events: none;
+    opacity: 0.22;
+    filter: url(#duotone-brand);
+    animation: mask-drift 20s ease-in-out infinite;
+  }
+  .section-mask--on-dark { opacity: 0.2; filter: url(#duotone-dark); }
+  .section-mask--tr { top: 4%; right: 3%; animation-duration: 21s; }
+  .section-mask--bl { bottom: 4%; left: 3%; animation-duration: 24s; animation-delay: -6s; }
+  .section-mask--tl { top: 4%; left: 3%; animation-duration: 22s; animation-delay: -10s; }
+  .section-mask--br { bottom: 4%; right: 3%; animation-duration: 26s; animation-delay: -14s; }
+  @keyframes mask-drift {
+    0%   { transform: translate(0, 0) rotate(-4deg) scale(1); }
+    25%  { transform: translate(16vw, 8vh) rotate(3deg) scale(1.08); }
+    50%  { transform: translate(5vw, 20vh) rotate(-3deg) scale(0.95); }
+    75%  { transform: translate(-14vw, 9vh) rotate(4deg) scale(1.05); }
+    100% { transform: translate(0, 0) rotate(-4deg) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .section-mask { animation: none; }
+  }
+
+  .section-heading {
+    font-family: "Archivo Black", sans-serif;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    color: var(--ink);
+  }
+  @media (min-width: 640px)  { .section-heading { font-size: 2.6rem; } }
+  @media (min-width: 1024px) { .section-heading { font-size: 3.1rem; } }
+  .section-heading .word { display: inline-block; opacity: 0; transform: translateY(20px); transition: opacity 650ms cubic-bezier(0.215,0.61,0.355,1), transform 650ms cubic-bezier(0.215,0.61,0.355,1); }
+  .section-heading .word.is-visible { opacity: 1; transform: translateY(0); }
+
+  .heading-rule {
+    display: block;
+    width: 3.25rem;
+    height: 0.3rem;
+    background: var(--red);
+    margin: 0.75rem auto 0;
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 700ms var(--ease-entrance);
+  }
+  .heading-rule.is-visible { transform: scaleX(1); }
+
+  .section-sub {
+    margin-top: 1.1rem;
+    max-width: 34rem;
+    font-family: "Lora", serif;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: opacity 700ms var(--ease-entrance), transform 700ms var(--ease-entrance);
+  }
+  @media (min-width: 640px) { .section-sub { font-size: 1.1rem; } }
+  .section-sub.is-visible { opacity: 1; transform: translateY(0); }
+
+  .reveal-fade {
+    opacity: 0;
+    transform: translateY(1.25rem);
+    transition: opacity 700ms var(--ease-entrance), transform 700ms var(--ease-entrance);
+  }
+  .reveal-fade.is-visible { opacity: 1; transform: translateY(0); }
+
+  .prose {
+    margin-top: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    text-align: left;
+    max-width: 42rem;
+  }
+  .prose p {
+    font-family: "Lora", serif;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--ink-soft);
+  }
+  @media (min-width: 640px) { .prose p { font-size: 1.08rem; } }
+
+  /* ---------- Two-column layouts ---------- */
+  .two-col {
+    margin-top: 2.75rem;
+    display: grid;
+    gap: 1.25rem;
+    width: 100%;
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+  @media (min-width: 768px) { .two-col { grid-template-columns: 1fr 1fr; gap: 1.75rem; } }
+
+  .info-card {
+    background: var(--bg-panel-2);
+    border: 1px solid var(--card-border);
+    border-radius: 1.25rem;
+    padding: 1.9rem;
+    box-shadow: var(--shadow);
+    transition: transform 300ms var(--ease-entrance), box-shadow 300ms var(--ease-entrance);
+  }
+  .info-card:hover { transform: translateY(-4px); box-shadow: 0 28px 70px rgba(88,5,11,0.12); }
+
+  .card-number {
+    font-family: "Archivo Black", sans-serif;
+    font-size: 1.3rem;
+    color: var(--red);
+  }
+  .info-card h3, .service-card h3 {
+    margin-top: 0.7rem;
+    font-family: "Archivo Black", sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .info-card p, .service-card > p {
+    margin-top: 0.7rem;
+    font-family: "Lora", serif;
+    font-size: 0.96rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  .service-card ul {
+    margin-top: 1.1rem;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .service-card li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+  .service-card li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 50%;
+    background: var(--red);
+  }
+
+  /* ---------- Our Difference ---------- */
+  .compare-head {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 40rem;
+    margin-top: 2.75rem;
+  }
+  .compare-head span {
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .compare-head .old-head { text-align: right; }
+  .compare-head .new-head { text-align: left; }
+  .compare-head .spacer { width: 1rem; }
+
+  .compare-list {
+    margin-top: 0.25rem;
+    width: 100%;
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .compare-row .old {
+    text-align: right;
+    font-family: "Lora", serif;
+    font-style: italic;
+    color: var(--ink-faint);
+    font-size: 0.9rem;
+  }
+  .compare-row .arrow { color: var(--red); font-weight: 700; }
+  .compare-row .new {
+    text-align: left;
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 0.92rem;
+  }
+  @media (min-width: 640px) {
+    .compare-row .old, .compare-row .new { font-size: 1rem; }
+  }
+
+  /* ---------- Contact ---------- */
+  .waitlist-wrap {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  .waitlist-form { width: 32rem; max-width: 100%; }
+
+  .glass-bar {
+    display: flex;
+    align-items: center;
+    height: 3.6rem;
+    border-radius: 9999px;
+    border: 1px solid var(--card-border);
+    background: #ffffff;
+    box-shadow: var(--shadow);
+    padding-left: 1.4rem;
+    padding-right: 0.4rem;
+  }
+  @media (min-width: 640px) { .glass-bar { height: 4rem; padding-left: 1.6rem; } }
+
+  .glass-bar input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: var(--ink);
+    font-size: 0.92rem;
+    font-family: inherit;
+    outline: none;
+  }
+  @media (min-width: 640px) { .glass-bar input { font-size: 1rem; } }
+  .glass-bar input::placeholder { color: var(--ink-faint); }
+
+  /* ---------- Footer ---------- */
+  .site-footer {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-alt);
+  }
+
+  .footer-cta-band {
+    position: relative;
+    z-index: 1;
+    background: var(--yellow);
+    padding: 1.5rem 1.25rem;
+  }
+  @media (min-width: 640px) { .footer-cta-band { padding: 1.75rem 2.5rem; } }
+  .footer-cta-band .topbar { max-width: 76rem; margin: 0 auto; }
+
+  .footer-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 76rem;
+    margin: 0 auto;
+    padding: 4.5rem 1.25rem 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.75rem;
+  }
+  @media (min-width: 640px) { .footer-inner { padding: 5.5rem 2.5rem 0; } }
+  @media (min-width: 768px) {
+    .footer-inner { grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; }
+  }
+
+  .footer-brand .brand-mark { font-size: clamp(1.4rem, 2.2vw, 1.7rem); }
+
+  .footer-blurb {
+    margin-top: 1.1rem;
+    max-width: 24rem;
+    font-family: "Lora", serif;
+    font-size: 0.98rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+
+  .footer-col { display: flex; flex-direction: column; gap: 0.9rem; }
+
+  .footer-heading {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .footer-col a {
+    font-size: 0.96rem;
+    font-weight: 500;
+    color: var(--ink);
+    width: fit-content;
+    transition: color 180ms var(--ease-entrance);
+  }
+  .footer-col a:hover { color: var(--red); }
+
+  .footer-bottom {
+    position: relative;
+    z-index: 1;
+    max-width: 76rem;
+    margin: 4rem auto 0;
+    padding: 1.75rem 1.25rem;
+    border-top: 1px solid var(--card-border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+    text-align: center;
+  }
+  @media (min-width: 640px) { .footer-bottom { padding: 1.75rem 2.5rem; } }
+  @media (min-width: 640px) {
+    .footer-bottom { flex-direction: row; justify-content: space-between; text-align: left; }
+  }
+  .footer-bottom p { font-size: 0.8rem; color: var(--ink-faint); }
+  .footer-credit { font-size: 0.8rem; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="duotone-brand" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="
+        0.2126 0.7152 0.0722 0 0
+        0.2126 0.7152 0.0722 0 0
+        0.2126 0.7152 0.0722 0 0
+        0 0 0 1 0" result="gray"/>
+      <feComponentTransfer in="gray">
+        <feFuncR type="table" tableValues="0.345 0.988"/>
+        <feFuncG type="table" tableValues="0.020 0.796"/>
+        <feFuncB type="table" tableValues="0.043 0"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="duotone-dark" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="
+        0.2126 0.7152 0.0722 0 0
+        0.2126 0.7152 0.0722 0 0
+        0.2126 0.7152 0.0722 0 0
+        0 0 0 1 0" result="gray"/>
+      <feComponentTransfer in="gray">
+        <feFuncR type="table" tableValues="0.2 1"/>
+        <feFuncG type="table" tableValues="0.024 1"/>
+        <feFuncB type="table" tableValues="0.043 1"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+</svg>
+
+<div class="grain-overlay" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="brand" href="/" id="brand-link">
+    <span class="sr-only">Loca Brands</span>
+    <span class="brand-mark" aria-hidden="true">L<span class="wm-o"></span>CA BRANDS</span>
+    <span class="brand-tagline" aria-hidden="true">/ Brand Building Studio</span>
+  </a>
+
+  <nav class="nav-links">
+    <a href="#what-we-do">What We Do</a>
+    <a href="#how-we-work">How We Work</a>
+    <a href="#services">Services</a>
+    <a href="#difference">Our Difference</a>
+  </nav>
+</header>
+
+<main class="stack">
+
+  <!-- ================= HERO ================= -->
+  <div class="panel-wrap">
+    <section class="panel hero-panel" id="hero" style="--panel-bg: var(--yellow);">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1 class="hero-heading reveal-fade">We Build The Founder,<strong>The Brand &amp; The Demand Engine.</strong></h1>
+
+          <div class="hero-desc">
+            <p class="reveal-fade" data-index="0">We are a senior-led brand building studio that helps founders <strong>build, launch, evolve, and scale</strong> consumer brands as one integrated system.</p>
+            <p class="reveal-fade" data-index="1">From idea to product, brand, design, technology, go-to-market, and growth — we bring the D2C ecosystem together.</p>
+          </div>
+
+          <a class="btn-outline reveal-fade" data-index="2" href="start-a-project.html">Start a Project</a>
+        </div>
+      </div>
+
+      <div class="hero-stickers reveal-fade" data-index="3" aria-hidden="true">
+        <div class="sticker sticker--planet">
+          <svg viewBox="0 0 260 210" xmlns="http://www.w3.org/2000/svg">
+            <path id="locaArc" d="M14,128 Q130,14 246,128" fill="none"/>
+            <text class="sticker-arc-text" font-size="40">
+              <textPath href="#locaArc" startOffset="50%" text-anchor="middle">LOCA</textPath>
+            </text>
+            <text class="sticker-main-text" x="130" y="188" font-size="56" text-anchor="middle">BRANDS</text>
+          </svg>
+        </div>
+
+        <div class="sticker sticker--vinyl">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="97" fill="#ffffff" stroke="var(--ink)" stroke-width="3"/>
+            <circle cx="100" cy="100" r="88" fill="var(--red)" stroke="var(--ink)" stroke-width="2.5"/>
+            <path id="brandRing" d="M100,24 a76,76 0 1,1 -0.1,0" fill="none"/>
+            <text class="vinyl-ring-text">
+              <textPath href="#brandRing" startOffset="2%">LOCA BRANDS &#8226; LOCA BRANDS &#8226;</textPath>
+            </text>
+            <path id="brandArc" d="M42,148 A64,64 0 0,0 158,148" fill="none"/>
+            <text class="vinyl-arc-text" text-anchor="middle">
+              <textPath href="#brandArc" startOffset="50%">FOUNDER . BRAND . DEMAND</textPath>
+            </text>
+            <circle cx="100" cy="100" r="26" fill="var(--red)" stroke="var(--ink)" stroke-width="3"/>
+            <circle cx="100" cy="100" r="4.5" fill="var(--ink)"/>
+          </svg>
+        </div>
+      </div>
+
+      <span class="panel-index">01</span>
+    </section>
+  </div>
+
+  <!-- ================= WHAT WE DO ================= -->
+  <div class="panel-wrap">
+    <section class="panel" id="what-we-do" style="--panel-bg:#ffffff;">
+      <div class="brand-mark-deco brand-mark-deco--tr" aria-hidden="true"></div>
+      <img class="section-mask section-mask--bl" src="assets/masks/mask-10.png" alt="" aria-hidden="true">
+      <div class="content-block section-card section-card--soft">
+        <p class="eyebrow reveal-fade">About Loca Brands</p>
+        <h2 class="section-heading">What We Do?</h2>
+        <span class="heading-rule reveal-fade" style="transition-delay:80ms"></span>
+
+        <div class="prose">
+          <p class="reveal-fade" data-index="0">We are a senior-led brand building studio that helps founders and businesses build, launch, evolve, and scale consumer brands as one integrated system. We partner with founders and leadership teams to build new brands and thoughtfully evolve what already exists.</p>
+          <p class="reveal-fade" data-index="1">We partner with founders and leadership teams to build new brands, thoughtfully evolve existing ones, and create the systems needed for sustainable growth.</p>
+          <p class="reveal-fade" data-index="2">From idea to product, brand, design, technology, go-to-market, and growth — we bring the D2C ecosystem together as one integrated system.</p>
+        </div>
+      </div>
+      <span class="panel-index">02</span>
+    </section>
+  </div>
+
+  <!-- ================= HOW WE WORK ================= -->
+  <div class="panel-wrap">
+    <section class="panel" id="how-we-work" style="--panel-bg:#fffbeb;">
+      <div class="brand-mark-deco brand-mark-deco--bl" aria-hidden="true"></div>
+      <img class="section-mask section-mask--tr" src="assets/masks/mask-11.png" alt="" aria-hidden="true">
+      <div class="content-block content-block--wide section-card">
+        <p class="eyebrow reveal-fade">Ways Of Working</p>
+        <h2 class="section-heading">We Work In Two Ways</h2>
+        <span class="heading-rule reveal-fade" style="transition-delay:80ms"></span>
+
+        <div class="two-col">
+          <div class="info-card reveal-fade" data-index="0">
+            <span class="card-number">01</span>
+            <h3>On-Demand Expertise</h3>
+            <p>Brands and founders can engage us for specific services or challenges based on their immediate requirements. We tailor our expertise and assemble the right capabilities around what the brand needs.</p>
+          </div>
+          <div class="info-card reveal-fade" data-index="1">
+            <span class="card-number">02</span>
+            <h3>End-to-End Brand Building</h3>
+            <p>For founders building a new venture, we can become a long-term strategic and execution partner — working across the entire journey from idea, product development and brand building to launch, growth, scale, and ultimately exit.</p>
+          </div>
+        </div>
+      </div>
+      <span class="panel-index">03</span>
+    </section>
+  </div>
+
+  <!-- ================= SERVICES SHOWCASE (draggable carousel) ================= -->
+  <div class="panel-wrap panel-wrap--scrub" id="services-wrap">
+    <section class="panel showcase-panel" id="services" style="--panel-bg: var(--hero-dark);">
+      <div class="hero-blob" aria-hidden="true" style="right:auto; left:-14rem; top:auto; bottom:-16rem; width:38rem; height:38rem; z-index:0;"></div>
+      <img class="section-mask section-mask--on-dark section-mask--tr" src="assets/masks/mask-12.png" alt="" aria-hidden="true">
+      <div class="showcase-inner">
+        <div class="showcase-head">
+          <div>
+            <p class="eyebrow reveal-fade" style="color:var(--hero-ink-soft)">Our Services</p>
+            <h2 class="showcase-heading reveal-fade" style="transition-delay:80ms">Full-Stack <span class="accent">Brand Building</span></h2>
+          </div>
+          <div class="showcase-head-right reveal-fade" style="transition-delay:160ms">
+            <p class="showcase-sub">Senior-led capability across product, brand, design, technology and growth — with proven experience and a results-driven focus.</p>
+            <div class="showcase-nav">
+              <button class="carousel-btn" id="carousel-prev" aria-label="Previous service">&larr;</button>
+              <button class="carousel-btn" id="carousel-next" aria-label="Next service">&rarr;</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="carousel-track-wrap reveal-fade" style="transition-delay:260ms">
+          <div class="carousel-track" id="carousel-track">
+            <article class="service-slide">
+              <span class="slide-tag">01 — Product</span>
+              <div class="slide-art slide-art--1">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <circle cx="22" cy="26" r="15" stroke="#fff" stroke-width="2.2"/>
+                  <circle cx="22" cy="26" r="9" stroke="#fff" stroke-width="2.2"/>
+                  <circle cx="22" cy="26" r="3" fill="#fff"/>
+                  <path d="M36 8 L24 20" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+                  <path d="M28 8 L36 8 L36 16" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3>Product Strategy</h3>
+              <p>From opportunity identification to a market-ready product, backed by real consumer research.</p>
+              <a class="slide-more" href="#services-product" aria-label="Explore Product">&#8599;</a>
+            </article>
+            <article class="service-slide">
+              <span class="slide-tag">02 — Brand</span>
+              <div class="slide-art slide-art--2">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <circle cx="18" cy="24" r="11" stroke="var(--ink)" stroke-width="2.4"/>
+                  <circle cx="30" cy="24" r="11" stroke="var(--ink)" stroke-width="2.4"/>
+                </svg>
+              </div>
+              <h3>Brand Identity</h3>
+              <p>A brand people recognize, remember and believe in — strategy through to narrative.</p>
+              <a class="slide-more" href="#services-product" aria-label="Explore Brand">&#8599;</a>
+            </article>
+            <article class="service-slide">
+              <span class="slide-tag">03 — Design</span>
+              <div class="slide-art slide-art--3">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <rect x="7" y="7" width="14" height="14" rx="2.5" stroke="#fff" stroke-width="2.2"/>
+                  <rect x="27" y="7" width="14" height="14" rx="2.5" fill="#fff"/>
+                  <rect x="7" y="27" width="14" height="14" rx="2.5" fill="#fff"/>
+                  <rect x="27" y="27" width="14" height="14" rx="2.5" stroke="#fff" stroke-width="2.2"/>
+                </svg>
+              </div>
+              <h3>Design Systems</h3>
+              <p>Strategy turned into a distinctive, consistent consumer experience across every touchpoint.</p>
+              <a class="slide-more" href="#services-design" aria-label="Explore Design">&#8599;</a>
+            </article>
+            <article class="service-slide">
+              <span class="slide-tag">04 — Technology</span>
+              <div class="slide-art slide-art--4">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M9 40 L9 28" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
+                  <path d="M19.5 40 L19.5 18" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
+                  <path d="M30 40 L30 10" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
+                  <path d="M40.5 40 L40.5 22" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <h3>Growth Technology</h3>
+              <p>The digital infrastructure behind the brand — commerce, CRM, analytics and automation.</p>
+              <a class="slide-more" href="#services-design" aria-label="Explore Technology">&#8599;</a>
+            </article>
+            <article class="service-slide">
+              <span class="slide-tag">05 — GTM</span>
+              <div class="slide-art slide-art--5">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M24 6 C30 12, 32 22, 27 33 L21 33 C16 22, 18 12, 24 6 Z" stroke="var(--ink)" stroke-width="2.2" stroke-linejoin="round"/>
+                  <circle cx="24" cy="18" r="3.2" stroke="var(--ink)" stroke-width="2"/>
+                  <path d="M18 27 L11 36 M30 27 L37 36" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round"/>
+                  <path d="M20.5 33 L24 41 L27.5 33" stroke="var(--ink)" stroke-width="2.2" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3>Go-To-Market</h3>
+              <p>Turning the brand into a business — launch planning through to performance and retention.</p>
+              <a class="slide-more" href="#services-gtm" aria-label="Explore Go-To-Market">&#8599;</a>
+            </article>
+            <article class="service-slide">
+              <span class="slide-tag">06 — Personal</span>
+              <div class="slide-art slide-art--6">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <circle cx="24" cy="18" r="7.5" stroke="#fff" stroke-width="2.2"/>
+                  <path d="M9 41 C9 30, 15.5 25, 24 25 C32.5 25, 39 30, 39 41" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+                  <path d="M38 6 L39.6 9.8 L43.6 10.2 L40.6 12.9 L41.5 16.8 L38 14.7 L34.5 16.8 L35.4 12.9 L32.4 10.2 L36.4 9.8 Z" fill="#fff"/>
+                </svg>
+              </div>
+              <h3>Personal Branding</h3>
+              <p>Founder-led authority on LinkedIn and Instagram, built with the same rigor as the brand.</p>
+              <a class="slide-more" href="#services-gtm" aria-label="Explore Personal Branding">&#8599;</a>
+            </article>
+          </div>
+          <div class="drag-hint" id="drag-hint"><span>Drag</span></div>
+        </div>
+      </div>
+      <span class="panel-index">04</span>
+    </section>
+  </div>
+
+  <!-- ================= SERVICES: PRODUCT + BRAND ================= -->
+  <div class="panel-wrap">
+    <section class="panel" id="services-product" style="--panel-bg:#ffffff;">
+      <div class="brand-mark-deco brand-mark-deco--tl" aria-hidden="true"></div>
+      <img class="section-mask section-mask--br" src="assets/masks/mask-13.png" alt="" aria-hidden="true">
+      <div class="content-block content-block--wide section-card section-card--soft">
+        <p class="eyebrow reveal-fade">Our Services</p>
+        <h2 class="section-heading">Every Capability, One Roof</h2>
+        <span class="heading-rule reveal-fade" style="transition-delay:80ms"></span>
+
+        <div class="two-col">
+          <div class="info-card service-card reveal-fade" data-index="0">
+            <span class="card-number">01</span>
+            <h3>Product</h3>
+            <p>From opportunity identification to a market-ready product.</p>
+            <ul>
+              <li>Market &amp; consumer research</li>
+              <li>Product opportunity</li>
+              <li>Product strategy</li>
+              <li>Product architecture</li>
+              <li>Product development</li>
+              <li>Packaging strategy</li>
+              <li>Product-market fit</li>
+            </ul>
+          </div>
+          <div class="info-card service-card reveal-fade" data-index="1">
+            <span class="card-number">02</span>
+            <h3>Brand</h3>
+            <p>Create a brand people can recognize, remember and believe in.</p>
+            <ul>
+              <li>Brand strategy</li>
+              <li>Positioning</li>
+              <li>Naming</li>
+              <li>Brand architecture</li>
+              <li>Brand identity</li>
+              <li>Brand narrative</li>
+              <li>Communication strategy</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <span class="panel-index">05</span>
+    </section>
+  </div>
+
+  <!-- ================= SERVICES: DESIGN + TECHNOLOGY ================= -->
+  <div class="panel-wrap">
+    <section class="panel" id="services-design" style="--panel-bg:#fffbeb;">
+      <div class="brand-mark-deco brand-mark-deco--br" aria-hidden="true"></div>
+      <img class="section-mask section-mask--tl" src="assets/masks/mask-14.png" alt="" aria-hidden="true">
+      <div class="content-block content-block--wide section-card">
+        <p class="eyebrow reveal-fade">Our Services</p>
+        <h2 class="section-heading">From Strategy To Experience</h2>
+        <span class="heading-rule reveal-fade" style="transition-delay:80ms"></span>
+
+        <div class="two-col">
+          <div class="info-card service-card reveal-fade" data-index="0">
+            <span class="card-number">03</span>
+            <h3>Design</h3>
+            <p>Turn strategy into a distinctive consumer experience.</p>
+            <ul>
+              <li>Visual identity</li>
+              <li>Packaging</li>
+              <li>Digital experience</li>
+              <li>Website &amp; e-commerce</li>
+              <li>Campaign design</li>
+              <li>Content systems</li>
+              <li>Retail &amp; physical touchpoints</li>
+            </ul>
+          </div>
+          <div class="info-card service-card reveal-fade" data-index="1">
+            <span class="card-number">04</span>
+            <h3>Technology</h3>
+            <p>Build the digital infrastructure behind the brand.</p>
+            <ul>
+              <li>E-commerce</li>
+              <li>Websites</li>
+              <li>Conversion architecture</li>
+              <li>Digital systems</li>
+              <li>Analytics</li>
+              <li>CRM</li>
+              <li>Automation</li>
+              <li>Growth technology</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <span class="panel-index">06</span>
+    </section>
+  </div>
+
+  <!-- ================= SERVICES: GTM + PERSONAL BRANDING ================= -->
+  <div class="panel-wrap">
+    <section class="panel" id="services-gtm" style="--panel-bg:#ffffff;">
+      <div class="brand-mark-deco brand-mark-deco--tr" aria-hidden="true"></div>
+      <img class="section-mask section-mask--bl" src="assets/masks/mask-15.png" alt="" aria-hidden="true">
+      <div class="content-block content-block--wide section-card section-card--soft">
+        <p class="eyebrow reveal-fade">Our Services</p>
+        <h2 class="section-heading">Turn The Brand Into A Business</h2>
+        <span class="heading-rule reveal-fade" style="transition-delay:80ms"></span>
+
+        <div class="two-col">
+          <div class="info-card service-card reveal-fade" data-index="0">
+            <span class="card-number">05</span>
+            <h3>Go-To-Market</h3>
+            <p>Turn the brand into a business.</p>
+            <ul>
+              <li>GTM strategy</li>
+              <li>Launch planning</li>
+              <li>Customer acquisition</li>
+              <li>Content &amp; social</li>
+              <li>Influencer strategy</li>
+              <li>Performance marketing</li>
+              <li>Distribution</li>
+              <li>Retention</li>
+              <li>Growth systems</li>
+            </ul>
+          </div>
+          <div class="info-card service-card reveal-fade" data-index="1">
+            <span class="card-number">06</span>
+            <h3>Personal Branding</h3>
+            <p>LinkedIn + Instagram — for the founder behind the brand.</p>
+            <ul>
+              <li>Personal brand strategy</li>
+              <li>Positioning &amp; narrative</li>
+              <li>Thought leadership</li>
+              <li>Content strategy</li>
+              <li>Founder-led storytelling</li>
+              <li>Authority building</li>
+              <li>Network &amp; community strategy</li>
+              <li>Content pillars &amp; formats</li>
+              <li>Short-form video strategy</li>
+              <li>Reels &amp; visual storytelling</li>
+              <li>Founder lifestyle &amp; behind-the-scenes content</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <span class="panel-index">07</span>
+    </section>
+  </div>
+
+  <!-- ================= OUR DIFFERENCE ================= -->
+  <div class="panel-wrap">
+    <section class="panel" id="difference" style="--panel-bg:#fffbeb;">
+      <div class="brand-mark-deco brand-mark-deco--bl" aria-hidden="true"></div>
+      <img class="section-mask section-mask--tr" src="assets/masks/mask-16.png" alt="" aria-hidden="true">
+      <div class="content-block section-card">
+        <p class="eyebrow reveal-fade">Why Loca Brands</p>
+        <h2 class="section-heading">Our Difference</h2>
+        <span class="heading-rule reveal-fade" style="transition-delay:80ms"></span>
+
+        <div class="compare-head reveal-fade" style="transition-delay:120ms">
+          <span class="old-head">Traditional Model</span>
+          <span class="spacer"></span>
+          <span class="new-head">Our Model</span>
+        </div>
+
+        <div class="compare-list">
+          <div class="compare-row reveal-fade" data-index="0">
+            <span class="old">Marketing agency</span>
+            <span class="arrow">&rarr;</span>
+            <span class="new">Brand building studio</span>
+          </div>
+          <div class="compare-row reveal-fade" data-index="1">
+            <span class="old">Function-led</span>
+            <span class="arrow">&rarr;</span>
+            <span class="new">Outcome-led</span>
+          </div>
+          <div class="compare-row reveal-fade" data-index="2">
+            <span class="old">Campaign focused</span>
+            <span class="arrow">&rarr;</span>
+            <span class="new">Business focused</span>
+          </div>
+          <div class="compare-row reveal-fade" data-index="3">
+            <span class="old">Multiple disconnected partners</span>
+            <span class="arrow">&rarr;</span>
+            <span class="new">One integrated system</span>
+          </div>
+          <div class="compare-row reveal-fade" data-index="4">
+            <span class="old">Execution first</span>
+            <span class="arrow">&rarr;</span>
+            <span class="new">Strategy &rarr; execution</span>
+          </div>
+          <div class="compare-row reveal-fade" data-index="5">
+            <span class="old">Short-term projects</span>
+            <span class="arrow">&rarr;</span>
+            <span class="new">Long-term partnerships</span>
+          </div>
+          <div class="compare-row reveal-fade" data-index="6">
+            <span class="old">Marketing after product</span>
+            <span class="arrow">&rarr;</span>
+            <span class="new">Product + brand + GTM from day one</span>
+          </div>
+        </div>
+      </div>
+      <span class="panel-index">08</span>
+    </section>
+  </div>
+
+  <!-- ================= CONTACT / FINAL CTA ================= -->
+  <div class="panel-wrap is-last">
+    <section class="panel" id="contact" style="--panel-bg:#ffffff;">
+      <div class="hero-blob" aria-hidden="true" style="right:auto; left:-16rem; top:auto; bottom:-18rem;"></div>
+      <img class="section-mask section-mask--tr" src="assets/masks/mask-17.png" alt="" aria-hidden="true">
+      <div class="content-block section-card">
+        <p class="eyebrow reveal-fade">Let's Talk</p>
+        <h2 class="section-heading">Ready To Build The<br>Next Big Brand?</h2>
+        <span class="heading-rule reveal-fade" style="transition-delay:80ms"></span>
+        <p class="section-sub reveal-fade" style="transition-delay:160ms">Tell us about your idea. We'll get back to you and start the conversation.</p>
+
+        <div class="waitlist-wrap reveal-fade" style="transition-delay:280ms">
+          <form class="waitlist-form js-waitlist-form">
+            <div class="glass-bar">
+              <input type="email" required placeholder="Your work email">
+              <button type="submit" class="btn-pill">Start the Conversation</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <span class="panel-index">09</span>
+    </section>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-cta-band">
+    <div class="topbar">
+      <span class="topbar-brand">Loca Brands<sup>&reg;</sup></span>
+      <a class="topbar-cta" href="start-a-project.html"><span class="topbar-dot" aria-hidden="true"></span>Start a Project</a>
+    </div>
+  </div>
+
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a class="brand" href="/">
+        <span class="sr-only">Loca Brands</span>
+        <span class="brand-mark" aria-hidden="true">L<span class="wm-o"></span>CA BRANDS</span>
+      </a>
+      <p class="footer-blurb">A senior-led brand building studio. We build the Founder, the Brand, the Demand Engine — helping consumer brands launch, evolve and scale as one integrated system.</p>
+    </div>
+
+    <div class="footer-col">
+      <span class="footer-heading">Explore</span>
+      <a href="#what-we-do">What We Do</a>
+      <a href="#how-we-work">How We Work</a>
+      <a href="#services">Services</a>
+      <a href="#difference">Our Difference</a>
+    </div>
+
+    <div class="footer-col">
+      <span class="footer-heading">Get In Touch</span>
+      <a href="mailto:hello@locabrands.studio">hello@locabrands.studio</a>
+      <a href="start-a-project.html">Start a Project</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Loca Brands — Brand Building Studio. All rights reserved.</p>
+    <span class="footer-credit">Brand Strategy &middot; Identity &middot; Demand Engine</span>
+  </div>
+</footer>
+
+<script type="module">
+import Lenis from "lenis";
+
+const lenis = new Lenis({ smoothWheel: true });
+
+/* ---------- Word-by-word reveal helper ---------- */
+function splitWords(el) {
+  const text = el.textContent.trim();
+  el.textContent = "";
+  const words = text.split(/\s+/);
+  words.forEach((w, i) => {
+    const span = document.createElement("span");
+    span.className = "word";
+    span.textContent = w;
+    el.appendChild(span);
+    if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
+  });
+  return el.querySelectorAll(".word");
+}
+
+function revealWords(words, baseDelay, stagger) {
+  words.forEach((w, i) => {
+    const delay = baseDelay + i * stagger;
+    w.style.transitionDelay = delay + "ms";
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => w.classList.add("is-visible"));
+    });
+  });
+}
+
+function revealBlock(id, delay) {
+  const el = document.getElementById(id);
+  if (el) setTimeout(() => el.classList.add("is-visible"), delay);
+}
+
+/* ---------- Hero entrance (on load) ---------- */
+window.addEventListener("load", () => {
+  revealBlock("nav", 150);
+});
+
+/* ---------- Waitlist / contact form ---------- */
+document.querySelectorAll(".js-waitlist-form").forEach((form) => {
+  form.addEventListener("submit", (e) => e.preventDefault());
+});
+
+/* ---------- Services showcase: draggable carousel ---------- */
+const carouselTrack = document.getElementById("carousel-track");
+if (carouselTrack) {
+  const dragHint = document.getElementById("drag-hint");
+  const prevBtn = document.getElementById("carousel-prev");
+  const nextBtn = document.getElementById("carousel-next");
+  const slides = Array.from(carouselTrack.querySelectorAll(".service-slide"));
+
+  const hideHint = () => { if (dragHint) dragHint.classList.add("is-hidden"); };
+
+  function updateActiveSlide() {
+    const trackRect = carouselTrack.getBoundingClientRect();
+    const center = trackRect.left + trackRect.width / 2;
+    let closest = null;
+    let closestDist = Infinity;
+    slides.forEach((slide) => {
+      const r = slide.getBoundingClientRect();
+      const slideCenter = r.left + r.width / 2;
+      const dist = Math.abs(slideCenter - center);
+      if (dist < closestDist) { closestDist = dist; closest = slide; }
+    });
+    slides.forEach((s) => s.classList.toggle("is-active", s === closest));
+  }
+
+  let isDown = false;
+  let startX = 0;
+  let scrollStart = 0;
+  let dragged = false;
+
+  carouselTrack.addEventListener("pointerdown", (e) => {
+    isDown = true;
+    dragged = false;
+    carouselTrack.classList.add("is-dragging");
+    startX = e.clientX;
+    scrollStart = carouselTrack.scrollLeft;
+    carouselTrack.setPointerCapture(e.pointerId);
+  });
+
+  carouselTrack.addEventListener("pointermove", (e) => {
+    if (!isDown) return;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 4) dragged = true;
+    carouselTrack.scrollLeft = scrollStart - dx;
+  });
+
+  const endDrag = () => {
+    if (!isDown) return;
+    isDown = false;
+    carouselTrack.classList.remove("is-dragging");
+    if (dragged) hideHint();
+  };
+  carouselTrack.addEventListener("pointerup", endDrag);
+  carouselTrack.addEventListener("pointerleave", endDrag);
+  carouselTrack.addEventListener("pointercancel", endDrag);
+  carouselTrack.addEventListener("wheel", hideHint, { passive: true });
+
+  function scrollByCard(dir) {
+    const card = carouselTrack.querySelector(".service-slide");
+    const gap = 20;
+    const amount = card ? card.getBoundingClientRect().width + gap : 280;
+    carouselTrack.scrollBy({ left: dir * amount, behavior: "smooth" });
+    hideHint();
+  }
+  if (prevBtn) prevBtn.addEventListener("click", () => scrollByCard(-1));
+  if (nextBtn) nextBtn.addEventListener("click", () => scrollByCard(1));
+
+  carouselTrack.addEventListener("scroll", () => {
+    requestAnimationFrame(updateActiveSlide);
+  }, { passive: true });
+
+  updateActiveSlide();
+}
+
+/* ---------- Scroll-triggered reveals for every section below the hero ---------- */
+document.querySelectorAll(".reveal-fade[data-index]").forEach((el) => {
+  el.style.transitionDelay = (parseInt(el.dataset.index, 10) * 90) + "ms";
+});
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("is-visible");
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.25 });
+
+document.querySelectorAll(".reveal-fade, .heading-rule, .eyebrow, .section-sub").forEach((el) => revealObserver.observe(el));
+
+const sectionHeadingWords = new Map();
+document.querySelectorAll(".section-heading").forEach((h) => {
+  sectionHeadingWords.set(h, splitWords(h));
+});
+
+const headingObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const words = sectionHeadingWords.get(entry.target);
+      if (words) revealWords(words, 0, 55);
+      headingObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.25 });
+
+document.querySelectorAll(".section-heading").forEach((h) => headingObserver.observe(h));
+
+/* ---------- Nav smooth-scroll + scrolled state ---------- */
+document.querySelectorAll('.nav-links a[href^="#"], .btn-pill[href^="#"], .btn-outline[href^="#"], .topbar-cta[href^="#"], .footer-col a[href^="#"]').forEach((a) => {
+  a.addEventListener("click", (e) => {
+    const target = document.querySelector(a.getAttribute("href"));
+    if (target) {
+      e.preventDefault();
+      lenis.scrollTo(target, { offset: 0 });
+    }
+  });
+});
+
+document.getElementById("brand-link").addEventListener("click", (e) => {
+  e.preventDefault();
+  lenis.scrollTo(0);
+});
+
+const navEl = document.getElementById("nav");
+lenis.on("scroll", ({ scroll }) => {
+  navEl.classList.toggle("nav--scrolled", scroll > 40);
+});
+
+/* ---------- Stacked parallax zoom-out / zoom-in on scroll ---------- */
+const panelData = Array.from(document.querySelectorAll(".panel-wrap")).map((wrap) => ({
+  wrap,
+  panel: wrap.querySelector(".panel"),
+  stuckEnd: 0,
+}));
+
+let cachedVH = window.innerHeight;
+
+function measurePanels() {
+  cachedVH = window.innerHeight;
+  panelData.forEach((data) => {
+    data.stuckEnd = data.wrap.offsetHeight - cachedVH;
+  });
+}
+measurePanels();
+
+// Eased motion curves — cubic for the outgoing shrink (smooth, no linear "mechanical" feel),
+// a slight back-out overshoot for the incoming panel so it settles with a tiny premium "bounce".
+function easeInOutCubic(t) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+function easeOutBack(t) {
+  const c1 = 1.70158;
+  const c3 = c1 + 1;
+  const x = t - 1;
+  return 1 + c3 * x * x * x + c1 * x * x;
+}
+
+const progressBuf = new Array(panelData.length).fill(0);
+const scaleBuf = new Array(panelData.length).fill(1);
+const opacityBuf = new Array(panelData.length).fill(1);
+const rotateBuf = new Array(panelData.length).fill(0);
+const liftBuf = new Array(panelData.length).fill(0);
+
+function updateStackParallax() {
+  const n = panelData.length;
+
+  // 1) batch-read: getBoundingClientRect for every wrap, no writes yet
+  for (let i = 0; i < n - 1; i++) {
+    const rect = panelData[i].wrap.getBoundingClientRect();
+    const scrolledInto = -rect.top;
+    let progress = (scrolledInto - panelData[i].stuckEnd) / cachedVH;
+    progressBuf[i] = progress < 0 ? 0 : progress > 1 ? 1 : progress;
+  }
+
+  // 2) compute combined scale/opacity/rotate/lift per panel (outgoing recede + incoming settle)
+  for (let i = 0; i < n; i++) { scaleBuf[i] = 1; opacityBuf[i] = 1; rotateBuf[i] = 0; liftBuf[i] = 0; }
+  for (let i = 0; i < n - 1; i++) {
+    const raw = progressBuf[i];
+    const pOut = easeInOutCubic(raw);
+    const pIn = easeOutBack(raw);
+
+    scaleBuf[i] *= 1 - pOut * 0.22;
+    opacityBuf[i] *= 1 - pOut * 0.4;
+    rotateBuf[i] += pOut * -1.4;
+    liftBuf[i] += pOut * -26;
+
+    scaleBuf[i + 1] *= 0.9 + pIn * 0.1;
+  }
+
+  // 3) batch-write: apply transforms/opacity, cheapest GPU-composited properties
+  for (let i = 0; i < n; i++) {
+    const panel = panelData[i].panel;
+    panel.style.transform = `translateY(${liftBuf[i]}px) scale(${scaleBuf[i]}) rotate(${rotateBuf[i]}deg)`;
+    panel.style.opacity = opacityBuf[i];
+  }
+}
+
+/* ---------- Services carousel: driven directly by scroll position, not wheel events ----------
+   While the services panel is pinned (its panel-wrap is taller than 100vh, see
+   .panel-wrap--scrub), how far the user has scrolled through that extra height maps
+   straight onto the carousel's scrollLeft. This can't race Lenis or miss input the way
+   intercepting wheel events could, because it isn't intercepting anything — it just reads
+   the scroll position every frame, exactly like the existing zoom/shrink effect already does. */
+const servicesWrap = document.getElementById("services-wrap");
+
+function updateServicesScrub() {
+  if (!servicesWrap || !carouselTrack) return;
+  const maxScroll = carouselTrack.scrollWidth - carouselTrack.clientWidth;
+  if (maxScroll <= 0) return;
+
+  const stuckRange = servicesWrap.offsetHeight - cachedVH;
+  if (stuckRange <= 0) return;
+
+  const rect = servicesWrap.getBoundingClientRect();
+  const scrolledInto = -rect.top;
+  let progress = scrolledInto / stuckRange;
+  progress = Math.min(1, Math.max(0, progress));
+
+  // Give a little settle time at the very start/end of the pinned range (to read the
+  // heading, and before the next section takes over) instead of scrubbing across 100% of it.
+  const scrubStart = 0.1;
+  const scrubEnd = 0.9;
+  let scrubProgress = (progress - scrubStart) / (scrubEnd - scrubStart);
+  scrubProgress = Math.min(1, Math.max(0, scrubProgress));
+
+  carouselTrack.scrollLeft = scrubProgress * maxScroll;
+}
+
+function raf(t) {
+  lenis.raf(t);
+  updateStackParallax();
+  updateServicesScrub();
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+window.addEventListener("resize", () => { measurePanels(); updateStackParallax(); });
+
+/* ---------- WebGL fluid simulation (hero background) ---------- */
+function fluidSimulation(canvas) {
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+
+    let config = {
+        SIM_RESOLUTION: 200,
+        DYE_RESOLUTION: 512,
+        DENSITY_DISSIPATION: 0.958,
+        VELOCITY_DISSIPATION: 0.96,
+        PRESSURE_DISSIPATION: 0.8,
+        PRESSURE_ITERATIONS: 20,
+        CURL: 42,
+        SPLAT_RADIUS: 0.22,
+        SHADING: true,
+        COLORFUL: true,
+        PAUSED: false,
+        BACK_COLOR: { r: 51, g: 6, b: 11 },
+        TRANSPARENT: false,
+        BLOOM: false,
+        BLOOM_ITERATIONS: 8,
+        BLOOM_RESOLUTION: 256,
+        BLOOM_INTENSITY: 0.8,
+        BLOOM_THRESHOLD: 0.8,
+        BLOOM_SOFT_KNEE: 0.7
+    };
+
+    function pointerPrototype() {
+        this.id = -1;
+        this.x = 0;
+        this.y = 0;
+        this.dx = 0;
+        this.dy = 0;
+        this.down = false;
+        this.moved = false;
+        this.color = [30, 0, 300];
+    }
+
+    let pointers = [];
+    let splatStack = [];
+    let bloomFramebuffers = [];
+    pointers.push(new pointerPrototype());
+
+    const { gl, ext } = getWebGLContext(canvas);
+
+    if (isMobile()) config.SHADING = false;
+    if (!ext.supportLinearFiltering) {
+        config.SHADING = false;
+        config.BLOOM = false;
+    }
+
+    function getWebGLContext(canvas) {
+        const params = { alpha: true, depth: false, stencil: false, antialias: false, preserveDrawingBuffer: false };
+
+        let gl = canvas.getContext('webgl2', params);
+        const isWebGL2 = !!gl;
+        if (!isWebGL2)
+            gl = canvas.getContext('webgl', params) || canvas.getContext('experimental-webgl', params);
+
+        let halfFloat;
+        let supportLinearFiltering;
+        if (isWebGL2) {
+            gl.getExtension('EXT_color_buffer_float');
+            supportLinearFiltering = gl.getExtension('OES_texture_float_linear');
+        } else {
+            halfFloat = gl.getExtension('OES_texture_half_float');
+            supportLinearFiltering = gl.getExtension('OES_texture_half_float_linear');
+        }
+
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+
+        const halfFloatTexType = isWebGL2 ? gl.HALF_FLOAT : halfFloat.HALF_FLOAT_OES;
+        let formatRGBA, formatRG, formatR;
+
+        if (isWebGL2) {
+            formatRGBA = getSupportedFormat(gl, gl.RGBA16F, gl.RGBA, halfFloatTexType);
+            formatRG = getSupportedFormat(gl, gl.RG16F, gl.RG, halfFloatTexType);
+            formatR = getSupportedFormat(gl, gl.R16F, gl.RED, halfFloatTexType);
+        } else {
+            formatRGBA = getSupportedFormat(gl, gl.RGBA, gl.RGBA, halfFloatTexType);
+            formatRG = getSupportedFormat(gl, gl.RGBA, gl.RGBA, halfFloatTexType);
+            formatR = getSupportedFormat(gl, gl.RGBA, gl.RGBA, halfFloatTexType);
+        }
+
+        return { gl, ext: { formatRGBA, formatRG, formatR, halfFloatTexType, supportLinearFiltering } };
+    }
+
+    function getSupportedFormat(gl, internalFormat, format, type) {
+        if (!supportRenderTextureFormat(gl, internalFormat, format, type)) {
+            switch (internalFormat) {
+                case gl.R16F: return getSupportedFormat(gl, gl.RG16F, gl.RG, type);
+                case gl.RG16F: return getSupportedFormat(gl, gl.RGBA16F, gl.RGBA, type);
+                default: return null;
+            }
+        }
+        return { internalFormat, format };
+    }
+
+    function supportRenderTextureFormat(gl, internalFormat, format, type) {
+        let texture = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, 4, 4, 0, format, type, null);
+
+        let fbo = gl.createFramebuffer();
+        gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+
+        const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+        return status == gl.FRAMEBUFFER_COMPLETE;
+    }
+
+    function isMobile() {
+        return /Mobi|Android/i.test(navigator.userAgent);
+    }
+
+    class GLProgram {
+        constructor(vertexShader, fragmentShader) {
+            this.uniforms = {};
+            this.program = gl.createProgram();
+            gl.attachShader(this.program, vertexShader);
+            gl.attachShader(this.program, fragmentShader);
+            gl.linkProgram(this.program);
+            if (!gl.getProgramParameter(this.program, gl.LINK_STATUS))
+                throw gl.getProgramInfoLog(this.program);
+            const uniformCount = gl.getProgramParameter(this.program, gl.ACTIVE_UNIFORMS);
+            for (let i = 0; i < uniformCount; i++) {
+                const uniformName = gl.getActiveUniform(this.program, i).name;
+                this.uniforms[uniformName] = gl.getUniformLocation(this.program, uniformName);
+            }
+        }
+        bind() { gl.useProgram(this.program); }
+    }
+
+    function compileShader(type, source) {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+            throw gl.getShaderInfoLog(shader);
+        return shader;
+    }
+
+    const baseVertexShader = compileShader(gl.VERTEX_SHADER, `
+        precision highp float;
+        attribute vec2 aPosition;
+        varying vec2 vUv;
+        varying vec2 vL;
+        varying vec2 vR;
+        varying vec2 vT;
+        varying vec2 vB;
+        uniform vec2 texelSize;
+        void main () {
+            vUv = aPosition * 0.5 + 0.5;
+            vL = vUv - vec2(texelSize.x, 0.0);
+            vR = vUv + vec2(texelSize.x, 0.0);
+            vT = vUv + vec2(0.0, texelSize.y);
+            vB = vUv - vec2(0.0, texelSize.y);
+            gl_Position = vec4(aPosition, 0.0, 1.0);
+        }
+    `);
+
+    const clearShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision mediump float;
+        precision mediump sampler2D;
+        varying highp vec2 vUv;
+        uniform sampler2D uTexture;
+        uniform float value;
+        void main () {
+            gl_FragColor = value * texture2D(uTexture, vUv);
+        }
+    `);
+
+    const colorShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision mediump float;
+        uniform vec4 color;
+        void main () {
+            gl_FragColor = color;
+        }
+    `);
+
+    const backgroundShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision highp float;
+        precision highp sampler2D;
+        varying vec2 vUv;
+        uniform sampler2D uTexture;
+        uniform float aspectRatio;
+        #define SCALE 25.0
+        void main () {
+            vec2 uv = floor(vUv * SCALE * vec2(aspectRatio, 1.0));
+            float v = mod(uv.x + uv.y, 2.0);
+            v = v * 0.1 + 0.8;
+            gl_FragColor = vec4(vec3(v), 1.0);
+        }
+    `);
+
+    const displayShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision highp float;
+        precision highp sampler2D;
+        varying vec2 vUv;
+        uniform sampler2D uTexture;
+        void main () {
+            vec3 C = texture2D(uTexture, vUv).rgb;
+            float a = max(C.r, max(C.g, C.b));
+            gl_FragColor = vec4(C, a);
+        }
+    `);
+
+    const displayBloomShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision highp float;
+        precision highp sampler2D;
+        varying vec2 vUv;
+        uniform sampler2D uTexture;
+        uniform sampler2D uBloom;
+        uniform sampler2D uDithering;
+        uniform vec2 ditherScale;
+        void main () {
+            vec3 C = texture2D(uTexture, vUv).rgb;
+            vec3 bloom = texture2D(uBloom, vUv).rgb;
+            vec3 noise = texture2D(uDithering, vUv * ditherScale).rgb;
+            noise = noise * 2.0 - 1.0;
+            bloom += noise / 800.0;
+            bloom = pow(bloom.rgb, vec3(1.0 / 2.2));
+            C += bloom;
+            float a = max(C.r, max(C.g, C.b));
+            gl_FragColor = vec4(C, a);
+        }
+    `);
+
+    const displayShadingShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision highp float;
+        precision highp sampler2D;
+        varying vec2 vUv;
+        varying vec2 vL;
+        varying vec2 vR;
+        varying vec2 vT;
+        varying vec2 vB;
+        uniform sampler2D uTexture;
+        uniform vec2 texelSize;
+        void main () {
+            vec3 L = texture2D(uTexture, vL).rgb;
+            vec3 R = texture2D(uTexture, vR).rgb;
+            vec3 T = texture2D(uTexture, vT).rgb;
+            vec3 B = texture2D(uTexture, vB).rgb;
+            vec3 C = texture2D(uTexture, vUv).rgb;
+            float dx = length(R) - length(L);
+            float dy = length(T) - length(B);
+            vec3 n = normalize(vec3(dx, dy, length(texelSize)));
+            vec3 l = vec3(0.0, 0.0, 1.0);
+            float diffuse = clamp(dot(n, l) + 0.7, 0.7, 1.0);
+            C.rgb *= diffuse;
+            float a = max(C.r, max(C.g, C.b));
+            gl_FragColor = vec4(C, a);
+        }
+    `);
+
+    const displayBloomShadingShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision highp float;
+        precision highp sampler2D;
+        varying vec2 vUv;
+        varying vec2 vL;
+        varying vec2 vR;
+        varying vec2 vT;
+        varying vec2 vB;
+        uniform sampler2D uTexture;
+        uniform sampler2D uBloom;
+        uniform sampler2D uDithering;
+        uniform vec2 ditherScale;
+        uniform vec2 texelSize;
+        void main () {
+            vec3 L = texture2D(uTexture, vL).rgb;
+            vec3 R = texture2D(uTexture, vR).rgb;
+            vec3 T = texture2D(uTexture, vT).rgb;
+            vec3 B = texture2D(uTexture, vB).rgb;
+            vec3 C = texture2D(uTexture, vUv).rgb;
+            float dx = length(R) - length(L);
+            float dy = length(T) - length(B);
+            vec3 n = normalize(vec3(dx, dy, length(texelSize)));
+            vec3 l = vec3(0.0, 0.0, 1.0);
+            float diffuse = clamp(dot(n, l) + 0.7, 0.7, 1.0);
+            C *= diffuse;
+            vec3 bloom = texture2D(uBloom, vUv).rgb;
+            vec3 noise = texture2D(uDithering, vUv * ditherScale).rgb;
+            noise = noise * 2.0 - 1.0;
+            bloom += noise / 800.0;
+            bloom = pow(bloom.rgb, vec3(1.0 / 2.2));
+            C += bloom;
+            float a = max(C.r, max(C.g, C.b));
+            gl_FragColor = vec4(C, a);
+        }
+    `);
+
+    const bloomPrefilterShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision mediump float;
+        precision mediump sampler2D;
+        varying vec2 vUv;
+        uniform sampler2D uTexture;
+        uniform vec3 curve;
+        uniform float threshold;
+        void main () {
+            vec3 c = texture2D(uTexture, vUv).rgb;
+            float br = max(c.r, max(c.g, c.b));
+            float rq = clamp(br - curve.x, 0.0, curve.y);
+            rq = curve.z * rq * rq;
+            c *= max(rq, br - threshold) / max(br, 0.0001);
+            gl_FragColor = vec4(c, 0.0);
+        }
+    `);
+
+    const bloomBlurShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision mediump float;
+        precision mediump sampler2D;
+        varying vec2 vL;
+        varying vec2 vR;
+        varying vec2 vT;
+        varying vec2 vB;
+        uniform sampler2D uTexture;
+        void main () {
+            vec4 sum = vec4(0.0);
+            sum += texture2D(uTexture, vL);
+            sum += texture2D(uTexture, vR);
+            sum += texture2D(uTexture, vT);
+            sum += texture2D(uTexture, vB);
+            sum *= 0.25;
+            gl_FragColor = sum;
+        }
+    `);
+
+    const bloomFinalShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision mediump float;
+        precision mediump sampler2D;
+        varying vec2 vL;
+        varying vec2 vR;
+        varying vec2 vT;
+        varying vec2 vB;
+        uniform sampler2D uTexture;
+        uniform float intensity;
+        void main () {
+            vec4 sum = vec4(0.0);
+            sum += texture2D(uTexture, vL);
+            sum += texture2D(uTexture, vR);
+            sum += texture2D(uTexture, vT);
+            sum += texture2D(uTexture, vB);
+            sum *= 0.25;
+            gl_FragColor = sum * intensity;
+        }
+    `);
+
+    const splatShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision highp float;
+        precision highp sampler2D;
+        varying vec2 vUv;
+        uniform sampler2D uTarget;
+        uniform float aspectRatio;
+        uniform vec3 color;
+        uniform vec2 point;
+        uniform float radius;
+        void main () {
+            vec2 p = vUv - point.xy;
+            p.x *= aspectRatio;
+            vec3 splat = exp(-dot(p, p) / radius) * color;
+            vec3 base = texture2D(uTarget, vUv).xyz;
+            gl_FragColor = vec4(base + splat, 1.0);
+        }
+    `);
+
+    const advectionManualFilteringShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision highp float;
+        precision highp sampler2D;
+        varying vec2 vUv;
+        uniform sampler2D uVelocity;
+        uniform sampler2D uSource;
+        uniform vec2 texelSize;
+        uniform vec2 dyeTexelSize;
+        uniform float dt;
+        uniform float dissipation;
+        vec4 bilerp (sampler2D sam, vec2 uv, vec2 tsize) {
+            vec2 st = uv / tsize - 0.5;
+            vec2 iuv = floor(st);
+            vec2 fuv = fract(st);
+            vec4 a = texture2D(sam, (iuv + vec2(0.5, 0.5)) * tsize);
+            vec4 b = texture2D(sam, (iuv + vec2(1.5, 0.5)) * tsize);
+            vec4 c = texture2D(sam, (iuv + vec2(0.5, 1.5)) * tsize);
+            vec4 d = texture2D(sam, (iuv + vec2(1.5, 1.5)) * tsize);
+            return mix(mix(a, b, fuv.x), mix(c, d, fuv.x), fuv.y);
+        }
+        void main () {
+            vec2 coord = vUv - dt * bilerp(uVelocity, vUv, texelSize).xy * texelSize;
+            gl_FragColor = dissipation * bilerp(uSource, coord, dyeTexelSize);
+            gl_FragColor.a = 1.0;
+        }
+    `);
+
+    const advectionShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision highp float;
+        precision highp sampler2D;
+        varying vec2 vUv;
+        uniform sampler2D uVelocity;
+        uniform sampler2D uSource;
+        uniform vec2 texelSize;
+        uniform float dt;
+        uniform float dissipation;
+        void main () {
+            vec2 coord = vUv - dt * texture2D(uVelocity, vUv).xy * texelSize;
+            gl_FragColor = dissipation * texture2D(uSource, coord);
+            gl_FragColor.a = 1.0;
+        }
+    `);
+
+    const divergenceShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision mediump float;
+        precision mediump sampler2D;
+        varying highp vec2 vUv;
+        varying highp vec2 vL;
+        varying highp vec2 vR;
+        varying highp vec2 vT;
+        varying highp vec2 vB;
+        uniform sampler2D uVelocity;
+        void main () {
+            float L = texture2D(uVelocity, vL).x;
+            float R = texture2D(uVelocity, vR).x;
+            float T = texture2D(uVelocity, vT).y;
+            float B = texture2D(uVelocity, vB).y;
+            vec2 C = texture2D(uVelocity, vUv).xy;
+            if (vL.x < 0.0) { L = -C.x; }
+            if (vR.x > 1.0) { R = -C.x; }
+            if (vT.y > 1.0) { T = -C.y; }
+            if (vB.y < 0.0) { B = -C.y; }
+            float div = 0.5 * (R - L + T - B);
+            gl_FragColor = vec4(div, 0.0, 0.0, 1.0);
+        }
+    `);
+
+    const curlShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision mediump float;
+        precision mediump sampler2D;
+        varying highp vec2 vUv;
+        varying highp vec2 vL;
+        varying highp vec2 vR;
+        varying highp vec2 vT;
+        varying highp vec2 vB;
+        uniform sampler2D uVelocity;
+        void main () {
+            float L = texture2D(uVelocity, vL).y;
+            float R = texture2D(uVelocity, vR).y;
+            float T = texture2D(uVelocity, vT).x;
+            float B = texture2D(uVelocity, vB).x;
+            float vorticity = R - L - T + B;
+            gl_FragColor = vec4(0.5 * vorticity, 0.0, 0.0, 1.0);
+        }
+    `);
+
+    const vorticityShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision highp float;
+        precision highp sampler2D;
+        varying vec2 vUv;
+        varying vec2 vL;
+        varying vec2 vR;
+        varying vec2 vT;
+        varying vec2 vB;
+        uniform sampler2D uVelocity;
+        uniform sampler2D uCurl;
+        uniform float curl;
+        uniform float dt;
+        void main () {
+            float L = texture2D(uCurl, vL).x;
+            float R = texture2D(uCurl, vR).x;
+            float T = texture2D(uCurl, vT).x;
+            float B = texture2D(uCurl, vB).x;
+            float C = texture2D(uCurl, vUv).x;
+            vec2 force = 0.5 * vec2(abs(T) - abs(B), abs(R) - abs(L));
+            force /= length(force) + 0.0001;
+            force *= curl * C;
+            force.y *= -1.0;
+            vec2 vel = texture2D(uVelocity, vUv).xy;
+            gl_FragColor = vec4(vel + force * dt, 0.0, 1.0);
+        }
+    `);
+
+    const pressureShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision mediump float;
+        precision mediump sampler2D;
+        varying highp vec2 vUv;
+        varying highp vec2 vL;
+        varying highp vec2 vR;
+        varying highp vec2 vT;
+        varying highp vec2 vB;
+        uniform sampler2D uPressure;
+        uniform sampler2D uDivergence;
+        vec2 boundary (vec2 uv) { return uv; }
+        void main () {
+            float L = texture2D(uPressure, boundary(vL)).x;
+            float R = texture2D(uPressure, boundary(vR)).x;
+            float T = texture2D(uPressure, boundary(vT)).x;
+            float B = texture2D(uPressure, boundary(vB)).x;
+            float C = texture2D(uPressure, vUv).x;
+            float divergence = texture2D(uDivergence, vUv).x;
+            float pressure = (L + R + B + T - divergence) * 0.25;
+            gl_FragColor = vec4(pressure, 0.0, 0.0, 1.0);
+        }
+    `);
+
+    const gradientSubtractShader = compileShader(gl.FRAGMENT_SHADER, `
+        precision mediump float;
+        precision mediump sampler2D;
+        varying highp vec2 vUv;
+        varying highp vec2 vL;
+        varying highp vec2 vR;
+        varying highp vec2 vT;
+        varying highp vec2 vB;
+        uniform sampler2D uPressure;
+        uniform sampler2D uVelocity;
+        vec2 boundary (vec2 uv) { return uv; }
+        void main () {
+            float L = texture2D(uPressure, boundary(vL)).x;
+            float R = texture2D(uPressure, boundary(vR)).x;
+            float T = texture2D(uPressure, boundary(vT)).x;
+            float B = texture2D(uPressure, boundary(vB)).x;
+            vec2 velocity = texture2D(uVelocity, vUv).xy;
+            velocity.xy -= vec2(R - L, T - B);
+            gl_FragColor = vec4(velocity, 0.0, 1.0);
+        }
+    `);
+
+    const blit = (() => {
+        gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, -1, 1, 1, 1, 1, -1]), gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([0, 1, 2, 0, 2, 3]), gl.STATIC_DRAW);
+        gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(0);
+        return (destination) => {
+            gl.bindFramebuffer(gl.FRAMEBUFFER, destination);
+            gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+        };
+    })();
+
+    let simWidth, simHeight, dyeWidth, dyeHeight;
+    let density, velocity, divergence, curl, pressure, bloom;
+
+    let ditheringTexture = createNoiseTexture(256);
+
+    const clearProgram = new GLProgram(baseVertexShader, clearShader);
+    const colorProgram = new GLProgram(baseVertexShader, colorShader);
+    const backgroundProgram = new GLProgram(baseVertexShader, backgroundShader);
+    const displayProgram = new GLProgram(baseVertexShader, displayShader);
+    const displayBloomProgram = new GLProgram(baseVertexShader, displayBloomShader);
+    const displayShadingProgram = new GLProgram(baseVertexShader, displayShadingShader);
+    const displayBloomShadingProgram = new GLProgram(baseVertexShader, displayBloomShadingShader);
+    const bloomPrefilterProgram = new GLProgram(baseVertexShader, bloomPrefilterShader);
+    const bloomBlurProgram = new GLProgram(baseVertexShader, bloomBlurShader);
+    const bloomFinalProgram = new GLProgram(baseVertexShader, bloomFinalShader);
+    const splatProgram = new GLProgram(baseVertexShader, splatShader);
+    const advectionProgram = new GLProgram(baseVertexShader, ext.supportLinearFiltering ? advectionShader : advectionManualFilteringShader);
+    const divergenceProgram = new GLProgram(baseVertexShader, divergenceShader);
+    const curlProgram = new GLProgram(baseVertexShader, curlShader);
+    const vorticityProgram = new GLProgram(baseVertexShader, vorticityShader);
+    const pressureProgram = new GLProgram(baseVertexShader, pressureShader);
+    const gradienSubtractProgram = new GLProgram(baseVertexShader, gradientSubtractShader);
+
+    function initFramebuffers() {
+        let simRes = getResolution(config.SIM_RESOLUTION);
+        let dyeRes = getResolution(config.DYE_RESOLUTION);
+
+        simWidth = simRes.width;
+        simHeight = simRes.height;
+        dyeWidth = dyeRes.width;
+        dyeHeight = dyeRes.height;
+
+        const texType = ext.halfFloatTexType;
+        const rgba = ext.formatRGBA;
+        const rg = ext.formatRG;
+        const r = ext.formatR;
+        const filtering = ext.supportLinearFiltering ? gl.LINEAR : gl.NEAREST;
+
+        if (density == null)
+            density = createDoubleFBO(dyeWidth, dyeHeight, rgba.internalFormat, rgba.format, texType, filtering);
+        else
+            density = resizeDoubleFBO(density, dyeWidth, dyeHeight, rgba.internalFormat, rgba.format, texType, filtering);
+
+        if (velocity == null)
+            velocity = createDoubleFBO(simWidth, simHeight, rg.internalFormat, rg.format, texType, filtering);
+        else
+            velocity = resizeDoubleFBO(velocity, simWidth, simHeight, rg.internalFormat, rg.format, texType, filtering);
+
+        divergence = createFBO(simWidth, simHeight, r.internalFormat, r.format, texType, gl.NEAREST);
+        curl = createFBO(simWidth, simHeight, r.internalFormat, r.format, texType, gl.NEAREST);
+        pressure = createDoubleFBO(simWidth, simHeight, r.internalFormat, r.format, texType, gl.NEAREST);
+
+        initBloomFramebuffers();
+    }
+
+    function initBloomFramebuffers() {
+        let res = getResolution(config.BLOOM_RESOLUTION);
+        const texType = ext.halfFloatTexType;
+        const rgba = ext.formatRGBA;
+        const filtering = ext.supportLinearFiltering ? gl.LINEAR : gl.NEAREST;
+
+        bloom = createFBO(res.width, res.height, rgba.internalFormat, rgba.format, texType, filtering);
+
+        bloomFramebuffers.length = 0;
+        for (let i = 0; i < config.BLOOM_ITERATIONS; i++) {
+            let width = res.width >> (i + 1);
+            let height = res.height >> (i + 1);
+            if (width < 2 || height < 2) break;
+            let fbo = createFBO(width, height, rgba.internalFormat, rgba.format, texType, filtering);
+            bloomFramebuffers.push(fbo);
+        }
+    }
+
+    function createFBO(w, h, internalFormat, format, type, param) {
+        gl.activeTexture(gl.TEXTURE0);
+        let texture = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, param);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, param);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, w, h, 0, format, type, null);
+
+        let fbo = gl.createFramebuffer();
+        gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+        gl.viewport(0, 0, w, h);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        return {
+            texture, fbo, width: w, height: h,
+            attach(id) {
+                gl.activeTexture(gl.TEXTURE0 + id);
+                gl.bindTexture(gl.TEXTURE_2D, texture);
+                return id;
+            }
+        };
+    }
+
+    function createDoubleFBO(w, h, internalFormat, format, type, param) {
+        let fbo1 = createFBO(w, h, internalFormat, format, type, param);
+        let fbo2 = createFBO(w, h, internalFormat, format, type, param);
+        return {
+            get read() { return fbo1; },
+            set read(value) { fbo1 = value; },
+            get write() { return fbo2; },
+            set write(value) { fbo2 = value; },
+            swap() { let temp = fbo1; fbo1 = fbo2; fbo2 = temp; }
+        };
+    }
+
+    function resizeFBO(target, w, h, internalFormat, format, type, param) {
+        let newFBO = createFBO(w, h, internalFormat, format, type, param);
+        clearProgram.bind();
+        gl.uniform1i(clearProgram.uniforms.uTexture, target.attach(0));
+        gl.uniform1f(clearProgram.uniforms.value, 1);
+        blit(newFBO.fbo);
+        return newFBO;
+    }
+
+    function resizeDoubleFBO(target, w, h, internalFormat, format, type, param) {
+        target.read = resizeFBO(target.read, w, h, internalFormat, format, type, param);
+        target.write = createFBO(w, h, internalFormat, format, type, param);
+        return target;
+    }
+
+    function createNoiseTexture(size) {
+        const data = new Uint8Array(size * size * 3);
+        for (let i = 0; i < data.length; i++) data[i] = Math.floor(Math.random() * 256);
+        let texture = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, size, size, 0, gl.RGB, gl.UNSIGNED_BYTE, data);
+        return {
+            texture, width: size, height: size,
+            attach(id) {
+                gl.activeTexture(gl.TEXTURE0 + id);
+                gl.bindTexture(gl.TEXTURE_2D, texture);
+                return id;
+            }
+        };
+    }
+
+    initFramebuffers();
+    multipleSplats(34);
+    for (let i = 0; i < 8; i++)
+        splatStack.push(10 + parseInt(Math.random() * 10));
+
+    let lastColorChangeTime = Date.now();
+    let virtualSeeded = false;
+    let orbitAngle = 0;
+    let vPrevX = 0, vPrevY = 0;
+    let virtualColor = null;
+    let lastVColorTime = 0;
+    const engineStart = Date.now();
+    const ORBIT_RADIUS = 300;
+    const ORBIT_SPEED = 0.026;
+    const ORBIT_START_DELAY = 700;
+
+    let rafHandle = 0;
+    let destroyed = false;
+    let offscreenPaused = false;
+
+    update();
+
+    function update() {
+        if (destroyed) return;
+        if (!offscreenPaused) {
+            resizeCanvas();
+            driveVirtualPointer();
+            input();
+            if (!config.PAUSED) step(0.016);
+            render(null);
+        }
+        rafHandle = requestAnimationFrame(update);
+    }
+
+    function driveVirtualPointer() {
+        if (Date.now() - engineStart < ORBIT_START_DELAY) return;
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const base = Math.min(ORBIT_RADIUS, canvas.width * 0.35, canvas.height * 0.35);
+        const r = base * (0.72 + 0.28 * Math.sin(orbitAngle * 0.37));
+        orbitAngle += ORBIT_SPEED;
+        const x = cx + Math.cos(orbitAngle) * r;
+        const y = cy + Math.sin(orbitAngle) * r;
+        if (!virtualSeeded) {
+            virtualSeeded = true;
+            vPrevX = x; vPrevY = y;
+            return;
+        }
+        if (!virtualColor || Date.now() - lastVColorTime > 120) {
+            virtualColor = generateColor();
+            virtualColor.r *= 3.2; virtualColor.g *= 3.2; virtualColor.b *= 3.2;
+            lastVColorTime = Date.now();
+        }
+        const dx = (x - vPrevX) * 9.0;
+        const dy = (y - vPrevY) * 9.0;
+        vPrevX = x; vPrevY = y;
+        splat(x, y, dx, dy, virtualColor);
+    }
+
+    function input() {
+        if (splatStack.length > 0) multipleSplats(splatStack.pop());
+
+        for (let i = 0; i < pointers.length; i++) {
+            const p = pointers[i];
+            if (p.moved) {
+                splat(p.x, p.y, p.dx, p.dy, p.color);
+                p.moved = false;
+            }
+        }
+
+        if (!config.COLORFUL) return;
+
+        if (lastColorChangeTime + 100 < Date.now()) {
+            lastColorChangeTime = Date.now();
+            for (let i = 0; i < pointers.length; i++) pointers[i].color = generateColor();
+        }
+    }
+
+    function step(dt) {
+        gl.disable(gl.BLEND);
+        gl.viewport(0, 0, simWidth, simHeight);
+
+        curlProgram.bind();
+        gl.uniform2f(curlProgram.uniforms.texelSize, 1.0 / simWidth, 1.0 / simHeight);
+        gl.uniform1i(curlProgram.uniforms.uVelocity, velocity.read.attach(0));
+        blit(curl.fbo);
+
+        vorticityProgram.bind();
+        gl.uniform2f(vorticityProgram.uniforms.texelSize, 1.0 / simWidth, 1.0 / simHeight);
+        gl.uniform1i(vorticityProgram.uniforms.uVelocity, velocity.read.attach(0));
+        gl.uniform1i(vorticityProgram.uniforms.uCurl, curl.attach(1));
+        gl.uniform1f(vorticityProgram.uniforms.curl, config.CURL);
+        gl.uniform1f(vorticityProgram.uniforms.dt, dt);
+        blit(velocity.write.fbo);
+        velocity.swap();
+
+        divergenceProgram.bind();
+        gl.uniform2f(divergenceProgram.uniforms.texelSize, 1.0 / simWidth, 1.0 / simHeight);
+        gl.uniform1i(divergenceProgram.uniforms.uVelocity, velocity.read.attach(0));
+        blit(divergence.fbo);
+
+        clearProgram.bind();
+        gl.uniform1i(clearProgram.uniforms.uTexture, pressure.read.attach(0));
+        gl.uniform1f(clearProgram.uniforms.value, config.PRESSURE_DISSIPATION);
+        blit(pressure.write.fbo);
+        pressure.swap();
+
+        pressureProgram.bind();
+        gl.uniform2f(pressureProgram.uniforms.texelSize, 1.0 / simWidth, 1.0 / simHeight);
+        gl.uniform1i(pressureProgram.uniforms.uDivergence, divergence.attach(0));
+        for (let i = 0; i < config.PRESSURE_ITERATIONS; i++) {
+            gl.uniform1i(pressureProgram.uniforms.uPressure, pressure.read.attach(1));
+            blit(pressure.write.fbo);
+            pressure.swap();
+        }
+
+        gradienSubtractProgram.bind();
+        gl.uniform2f(gradienSubtractProgram.uniforms.texelSize, 1.0 / simWidth, 1.0 / simHeight);
+        gl.uniform1i(gradienSubtractProgram.uniforms.uPressure, pressure.read.attach(0));
+        gl.uniform1i(gradienSubtractProgram.uniforms.uVelocity, velocity.read.attach(1));
+        blit(velocity.write.fbo);
+        velocity.swap();
+
+        advectionProgram.bind();
+        gl.uniform2f(advectionProgram.uniforms.texelSize, 1.0 / simWidth, 1.0 / simHeight);
+        if (!ext.supportLinearFiltering)
+            gl.uniform2f(advectionProgram.uniforms.dyeTexelSize, 1.0 / simWidth, 1.0 / simHeight);
+        let velocityId = velocity.read.attach(0);
+        gl.uniform1i(advectionProgram.uniforms.uVelocity, velocityId);
+        gl.uniform1i(advectionProgram.uniforms.uSource, velocityId);
+        gl.uniform1f(advectionProgram.uniforms.dt, dt);
+        gl.uniform1f(advectionProgram.uniforms.dissipation, config.VELOCITY_DISSIPATION);
+        blit(velocity.write.fbo);
+        velocity.swap();
+
+        gl.viewport(0, 0, dyeWidth, dyeHeight);
+
+        if (!ext.supportLinearFiltering)
+            gl.uniform2f(advectionProgram.uniforms.dyeTexelSize, 1.0 / dyeWidth, 1.0 / dyeHeight);
+        gl.uniform1i(advectionProgram.uniforms.uVelocity, velocity.read.attach(0));
+        gl.uniform1i(advectionProgram.uniforms.uSource, density.read.attach(1));
+        gl.uniform1f(advectionProgram.uniforms.dissipation, config.DENSITY_DISSIPATION);
+        blit(density.write.fbo);
+        density.swap();
+    }
+
+    function render(target) {
+        if (config.BLOOM) applyBloom(density.read, bloom);
+
+        if (target == null || !config.TRANSPARENT) {
+            gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+            gl.enable(gl.BLEND);
+        } else {
+            gl.disable(gl.BLEND);
+        }
+
+        let width = target == null ? gl.drawingBufferWidth : dyeWidth;
+        let height = target == null ? gl.drawingBufferHeight : dyeHeight;
+        gl.viewport(0, 0, width, height);
+
+        if (!config.TRANSPARENT) {
+            colorProgram.bind();
+            let bc = config.BACK_COLOR;
+            gl.uniform4f(colorProgram.uniforms.color, bc.r / 255, bc.g / 255, bc.b / 255, 1);
+            blit(target);
+        }
+
+        if (target == null && config.TRANSPARENT) {
+            backgroundProgram.bind();
+            gl.uniform1f(backgroundProgram.uniforms.aspectRatio, canvas.width / canvas.height);
+            blit(null);
+        }
+
+        if (config.SHADING) {
+            let program = config.BLOOM ? displayBloomShadingProgram : displayShadingProgram;
+            program.bind();
+            gl.uniform2f(program.uniforms.texelSize, 1.0 / width, 1.0 / height);
+            gl.uniform1i(program.uniforms.uTexture, density.read.attach(0));
+            if (config.BLOOM) {
+                gl.uniform1i(program.uniforms.uBloom, bloom.attach(1));
+                gl.uniform1i(program.uniforms.uDithering, ditheringTexture.attach(2));
+                let scale = getTextureScale(ditheringTexture, width, height);
+                gl.uniform2f(program.uniforms.ditherScale, scale.x, scale.y);
+            }
+        } else {
+            let program = config.BLOOM ? displayBloomProgram : displayProgram;
+            program.bind();
+            gl.uniform1i(program.uniforms.uTexture, density.read.attach(0));
+            if (config.BLOOM) {
+                gl.uniform1i(program.uniforms.uBloom, bloom.attach(1));
+                gl.uniform1i(program.uniforms.uDithering, ditheringTexture.attach(2));
+                let scale = getTextureScale(ditheringTexture, width, height);
+                gl.uniform2f(program.uniforms.ditherScale, scale.x, scale.y);
+            }
+        }
+
+        blit(target);
+    }
+
+    function applyBloom(source, destination) {
+        if (bloomFramebuffers.length < 2) return;
+
+        let last = destination;
+
+        gl.disable(gl.BLEND);
+        bloomPrefilterProgram.bind();
+        let knee = config.BLOOM_THRESHOLD * config.BLOOM_SOFT_KNEE + 0.0001;
+        let curve0 = config.BLOOM_THRESHOLD - knee;
+        let curve1 = knee * 2;
+        let curve2 = 0.25 / knee;
+        gl.uniform3f(bloomPrefilterProgram.uniforms.curve, curve0, curve1, curve2);
+        gl.uniform1f(bloomPrefilterProgram.uniforms.threshold, config.BLOOM_THRESHOLD);
+        gl.uniform1i(bloomPrefilterProgram.uniforms.uTexture, source.attach(0));
+        gl.viewport(0, 0, last.width, last.height);
+        blit(last.fbo);
+
+        bloomBlurProgram.bind();
+        for (let i = 0; i < bloomFramebuffers.length; i++) {
+            let dest = bloomFramebuffers[i];
+            gl.uniform2f(bloomBlurProgram.uniforms.texelSize, 1.0 / last.width, 1.0 / last.height);
+            gl.uniform1i(bloomBlurProgram.uniforms.uTexture, last.attach(0));
+            gl.viewport(0, 0, dest.width, dest.height);
+            blit(dest.fbo);
+            last = dest;
+        }
+
+        gl.blendFunc(gl.ONE, gl.ONE);
+        gl.enable(gl.BLEND);
+
+        for (let i = bloomFramebuffers.length - 2; i >= 0; i--) {
+            let baseTex = bloomFramebuffers[i];
+            gl.uniform2f(bloomBlurProgram.uniforms.texelSize, 1.0 / last.width, 1.0 / last.height);
+            gl.uniform1i(bloomBlurProgram.uniforms.uTexture, last.attach(0));
+            gl.viewport(0, 0, baseTex.width, baseTex.height);
+            blit(baseTex.fbo);
+            last = baseTex;
+        }
+
+        gl.disable(gl.BLEND);
+        bloomFinalProgram.bind();
+        gl.uniform2f(bloomFinalProgram.uniforms.texelSize, 1.0 / last.width, 1.0 / last.height);
+        gl.uniform1i(bloomFinalProgram.uniforms.uTexture, last.attach(0));
+        gl.uniform1f(bloomFinalProgram.uniforms.intensity, config.BLOOM_INTENSITY);
+        gl.viewport(0, 0, destination.width, destination.height);
+        blit(destination.fbo);
+    }
+
+    function correctRadius(radius) {
+        let aspectRatio = canvas.width / canvas.height;
+        if (aspectRatio > 1) radius *= aspectRatio;
+        return radius;
+    }
+
+    function splat(x, y, dx, dy, color) {
+        gl.viewport(0, 0, simWidth, simHeight);
+        splatProgram.bind();
+        gl.uniform1i(splatProgram.uniforms.uTarget, velocity.read.attach(0));
+        gl.uniform1f(splatProgram.uniforms.aspectRatio, canvas.width / canvas.height);
+        gl.uniform2f(splatProgram.uniforms.point, x / canvas.width, 1.0 - y / canvas.height);
+        gl.uniform3f(splatProgram.uniforms.color, dx, -dy, 1.0);
+        gl.uniform1f(splatProgram.uniforms.radius, correctRadius(config.SPLAT_RADIUS / 100.0));
+        blit(velocity.write.fbo);
+        velocity.swap();
+
+        gl.viewport(0, 0, dyeWidth, dyeHeight);
+        gl.uniform1i(splatProgram.uniforms.uTarget, density.read.attach(0));
+        gl.uniform3f(splatProgram.uniforms.color, color.r, color.g, color.b);
+        blit(density.write.fbo);
+        density.swap();
+    }
+
+    function multipleSplats(amount) {
+        for (let i = 0; i < amount; i++) {
+            const color = generateColor();
+            color.r *= 10.0; color.g *= 10.0; color.b *= 10.0;
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height;
+            const dx = 1000 * (Math.random() - 0.5);
+            const dy = 1000 * (Math.random() - 0.5);
+            splat(x, y, dx, dy, color);
+        }
+    }
+
+    function resizeCanvas() {
+        if (canvas.width != canvas.clientWidth || canvas.height != canvas.clientHeight) {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            initFramebuffers();
+        }
+    }
+
+    function getResolution(resolution) {
+        let aspectRatio = gl.drawingBufferWidth / gl.drawingBufferHeight;
+        if (aspectRatio < 1) aspectRatio = 1.0 / aspectRatio;
+
+        let min = Math.round(resolution);
+        let max = Math.round(resolution * aspectRatio);
+
+        if (gl.drawingBufferWidth > gl.drawingBufferHeight)
+            return { width: max, height: min };
+        else
+            return { width: min, height: max };
+    }
+
+    function getTextureScale(texture, width, height) {
+        return { x: width / texture.width, y: height / texture.height };
+    }
+
+    function HSVtoRGB(h, s, v) {
+        let r, g, b, i, f, p, q, t;
+        i = Math.floor(h * 6);
+        f = h * 6 - i;
+        p = v * (1 - s);
+        q = v * (1 - f * s);
+        t = v * (1 - (1 - f) * s);
+        switch (i % 6) {
+            case 0: r = v; g = t; b = p; break;
+            case 1: r = q; g = v; b = p; break;
+            case 2: r = p; g = v; b = t; break;
+            case 3: r = p; g = q; b = v; break;
+            case 4: r = t; g = p; b = v; break;
+            case 5: r = v; g = p; b = q; break;
+        }
+        return { r, g, b };
+    }
+
+    function generateColor() {
+        // Restricted to the brand's two ink hues: accent red (#e71120) and primary yellow (#fccb00)
+        const palette = [
+            { h: 0.988, s: 0.926 }, // accent red
+            { h: 0.134, s: 1.0 },   // primary yellow
+        ];
+        const pick = palette[Math.floor(Math.random() * palette.length)];
+        let c = HSVtoRGB(pick.h, pick.s, 1.0);
+        c.r *= 0.32; c.g *= 0.32; c.b *= 0.32;
+        return c;
+    }
+
+    window.addEventListener('mousemove', e => {
+        const pointer = pointers[0];
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        pointer.moved = true;
+        pointer.dx = (x - pointer.x) * 8.0;
+        pointer.dy = (y - pointer.y) * 8.0;
+        pointer.x = x;
+        pointer.y = y;
+        pointer.color = generateColor();
+    });
+
+    window.addEventListener('touchmove', e => {
+        const touches = e.targetTouches;
+        const pointer = pointers[0];
+        const rect = canvas.getBoundingClientRect();
+        for (let i = 0; i < touches.length; i++) {
+            const x = touches[i].clientX - rect.left;
+            const y = touches[i].clientY - rect.top;
+            pointer.moved = true;
+            pointer.dx = (x - pointer.x) * 8.0;
+            pointer.dy = (y - pointer.y) * 8.0;
+            pointer.x = x;
+            pointer.y = y;
+        }
+    }, { passive: true });
+
+    window.addEventListener('mousedown', e => {
+        const rect = canvas.getBoundingClientRect();
+        pointers[0].x = e.clientX - rect.left;
+        pointers[0].y = e.clientY - rect.top;
+        pointers[0].down = true;
+        pointers[0].color = generateColor();
+    });
+
+    window.addEventListener('mouseup', () => { pointers[0].down = false; });
+
+    window.addEventListener('touchstart', e => {
+        const touches = e.targetTouches;
+        const rect = canvas.getBoundingClientRect();
+        pointers[0].x = touches[0].clientX - rect.left;
+        pointers[0].y = touches[0].clientY - rect.top;
+        pointers[0].down = true;
+        pointers[0].color = generateColor();
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => { pointers[0].down = false; });
+
+    return {
+        destroy() {
+            destroyed = true;
+            cancelAnimationFrame(rafHandle);
+        },
+        setPaused(v) { offscreenPaused = v; }
+    };
+}
+
+const fluidCanvas = document.querySelector('.fluid-canvas');
+if (fluidCanvas) {
+    const fluidEngine = fluidSimulation(fluidCanvas);
+    const heroWrap = document.querySelector('.panel-wrap');
+    if (heroWrap && 'IntersectionObserver' in window) {
+        const heroVisibility = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => fluidEngine.setPaused(!entry.isIntersecting));
+        }, { threshold: 0 });
+        heroVisibility.observe(heroWrap);
+    }
+}
+</script>
+
+</body>
+</html>

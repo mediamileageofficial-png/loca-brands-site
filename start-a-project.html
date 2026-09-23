@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start a Project — Loca Brands</title>
+<meta name="description" content="Tell us about your brand. Loca Brands partners with founders to build the Founder, the Brand, and the Demand Engine.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Fredoka:wght@600;700&family=Poppins:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<script type="importmap">
+{ "imports": { "lenis": "https://unpkg.com/lenis@1.3.19/dist/lenis.mjs" } }
+</script>
+<style>
+  :root {
+    --bg:            #ffffff;
+    --bg-alt:        #fffbeb;
+    --bg-panel-2:    #ffffff;
+    --ink:           #58050b;
+    --ink-soft:      rgba(88,5,11,0.75);
+    --ink-faint:     rgba(88,5,11,0.48);
+    --red:           #e71120;
+    --red-dark:      #b30d19;
+    --yellow:        #fccb00;
+    --yellow-dark:   #caa200;
+    --line:          rgba(88,5,11,0.12);
+    --card-border:   rgba(88,5,11,0.09);
+    --field-fill:    rgba(88,5,11,0.035);
+    --shadow:        0 20px 60px rgba(88,5,11,0.10);
+    --ease-entrance: cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  * { margin: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  a { text-decoration: none; color: inherit; }
+  ul { padding: 0; list-style: none; }
+  button { font: inherit; border: none; background: none; cursor: pointer; }
+
+  body {
+    font-family: "Poppins", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  /* ---------- Minimal header ---------- */
+  .mini-header {
+    display: flex;
+    align-items: center;
+    padding: 1.75rem 1.5rem;
+  }
+  @media (min-width: 640px) { .mini-header { padding: 2.25rem 2.5rem; } }
+
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  .brand-mark {
+    font-family: "Fredoka", sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    color: var(--red);
+    letter-spacing: 0.01em;
+    -webkit-text-stroke: 1.1px var(--ink);
+    filter: drop-shadow(1.5px 2px 0 rgba(88,5,11,0.3));
+    transform: rotate(-3deg);
+    display: inline-block;
+  }
+  .wm-o {
+    display: inline-block;
+    width: 0.62em;
+    height: 0.62em;
+    border-radius: 50%;
+    background: var(--red);
+    vertical-align: -0.03em;
+    margin: 0 0.03em;
+  }
+
+  /* ---------- Page ---------- */
+  .page-wrap {
+    max-width: 76rem;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 7rem;
+  }
+  @media (min-width: 640px) { .page-wrap { padding: 3rem 2.5rem 9rem; } }
+
+  .page-heading {
+    text-align: center;
+    font-family: "Lora", serif;
+    font-weight: 500;
+    font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    opacity: 0;
+    transform: translateY(14px);
+    animation: reveal-up 700ms var(--ease-entrance) 100ms forwards;
+  }
+  .page-sub {
+    margin-top: 0.85rem;
+    text-align: center;
+    font-family: "Lora", serif;
+    font-size: 1.02rem;
+    color: var(--ink-soft);
+    max-width: 34rem;
+    margin-inline: auto;
+    opacity: 0;
+    transform: translateY(14px);
+    animation: reveal-up 700ms var(--ease-entrance) 220ms forwards;
+  }
+
+  .apply-grid {
+    margin-top: clamp(3rem, 7vw, 5.5rem);
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 2.5rem;
+    align-items: start;
+    opacity: 0;
+    transform: translateY(18px);
+    animation: reveal-up 800ms var(--ease-entrance) 340ms forwards;
+  }
+
+  /* ---------- Decorative flying butterfly (real 12-frame photo sequence, not a CSS trick) ----------
+     Fixed to the viewport (not the grid) so it can roam across the whole page, not just its own column. */
+  .sprig-wrap {
+    display: block;
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+  }
+  /* Outer layer: a long, smooth wandering flight path across most of the viewport.
+     `top`/`left` are 0 — the keyframes below are themselves absolute vw/vh positions,
+     not deltas from a base point, so there's nothing else to add here. */
+  .butterfly-fly {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 11rem;
+    /* linear, not ease-in-out: the path is already 48 closely-spaced points sampled from
+       a smooth curve, so linear interpolation between them reads as continuous motion.
+       ease-in-out here would decelerate-then-accelerate at every single one of those 48
+       points, which is exactly the "pause and dash" stutter this replaces. */
+    animation: butterfly-fly 22s linear infinite;
+  }
+  @media (max-width: 640px) { .butterfly-fly { width: 7.5rem; } }
+  /* The frames themselves are recolored to the site's ink/white duotone — this also turns
+     the motion-blur trail baked into the source photos into a deliberate-looking speed streak
+     instead of a stray gray smudge. */
+  .butterfly-sprite {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: url(#butterfly-duotone) drop-shadow(0 6px 8px rgba(88,5,11,0.16));
+  }
+
+  /* A Lissajous-style path (sums of sine waves at integer frequencies, so it returns
+     exactly to its start — no seam at the loop point) sampled at 48 points across the
+     viewport, for continuous organic wandering instead of a few sparse, jerky waypoints. */
+  @keyframes butterfly-fly {
+    0% { transform: translate(48.69vw, 54.70vh) rotate(2.73deg); }
+    2.08% { transform: translate(53.36vw, 55.02vh) rotate(4.99deg); }
+    4.17% { transform: translate(56.14vw, 51.13vh) rotate(6.49deg); }
+    6.25% { transform: translate(57.07vw, 43.35vh) rotate(7.00deg); }
+    8.33% { transform: translate(56.44vw, 33.27vh) rotate(6.45deg); }
+    10.42% { transform: translate(54.76vw, 23.33vh) rotate(4.91deg); }
+    12.5% { transform: translate(52.67vw, 15.81vh) rotate(2.63deg); }
+    14.58% { transform: translate(50.83vw, 12.12vh) rotate(-0.05deg); }
+    16.67% { transform: translate(49.82vw, 12.24vh) rotate(-2.73deg); }
+    18.75% { transform: translate(50.06vw, 14.90vh) rotate(-4.99deg); }
+    20.83% { transform: translate(51.70vw, 18.16vh) rotate(-6.49deg); }
+    22.92% { transform: translate(54.66vw, 20.27vh) rotate(-7.00deg); }
+    25% { transform: translate(58.56vw, 20.42vh) rotate(-6.45deg); }
+    27.08% { transform: translate(62.84vw, 19.08vh) rotate(-4.91deg); }
+    29.17% { transform: translate(66.83vw, 17.76vh) rotate(-2.63deg); }
+    31.25% { transform: translate(69.82vw, 18.33vh) rotate(0.05deg); }
+    33.33% { transform: translate(71.21vw, 22.14vh) rotate(2.73deg); }
+    35.42% { transform: translate(70.59vw, 29.38vh) rotate(4.99deg); }
+    37.5% { transform: translate(67.80vw, 38.85vh) rotate(6.49deg); }
+    39.58% { transform: translate(62.95vw, 48.36vh) rotate(7.00deg); }
+    41.67% { transform: translate(56.44vw, 55.51vh) rotate(6.45deg); }
+    43.75% { transform: translate(48.89vw, 58.57vh) rotate(4.91deg); }
+    45.83% { transform: translate(41.02vw, 57.12vh) rotate(2.63deg); }
+    47.92% { transform: translate(33.60vw, 52.16vh) rotate(-0.05deg); }
+    50% { transform: translate(27.31vw, 45.67vh) rotate(-2.73deg); }
+    52.08% { transform: translate(22.64vw, 39.81vh) rotate(-4.99deg); }
+    54.17% { transform: translate(19.86vw, 36.04vh) rotate(-6.49deg); }
+    56.25% { transform: translate(18.93vw, 34.60vh) rotate(-7.00deg); }
+    58.33% { transform: translate(19.56vw, 34.50vh) rotate(-6.45deg); }
+    60.42% { transform: translate(21.24vw, 34.01vh) rotate(-4.91deg); }
+    62.5% { transform: translate(23.33vw, 31.54vh) rotate(-2.63deg); }
+    64.58% { transform: translate(25.17vw, 26.39vh) rotate(0.05deg); }
+    66.67% { transform: translate(26.18vw, 19.16vh) rotate(2.73deg); }
+    68.75% { transform: translate(25.94vw, 11.61vh) rotate(4.99deg); }
+    70.83% { transform: translate(24.30vw, 6.02vh) rotate(6.49deg); }
+    72.92% { transform: translate(21.34vw, 4.29vh) rotate(7.00deg); }
+    75% { transform: translate(17.44vw, 7.21vh) rotate(6.45deg); }
+    77.08% { transform: translate(13.16vw, 14.10vh) rotate(4.91deg); }
+    79.17% { transform: translate(9.17vw, 23.07vh) rotate(2.63deg); }
+    81.25% { transform: translate(6.18vw, 31.73vh) rotate(-0.05deg); }
+    83.33% { transform: translate(4.79vw, 38.09vh) rotate(-2.73deg); }
+    85.42% { transform: translate(5.41vw, 41.29vh) rotate(-4.99deg); }
+    87.5% { transform: translate(8.20vw, 41.80vh) rotate(-6.49deg); }
+    89.58% { transform: translate(13.05vw, 41.13vh) rotate(-7.00deg); }
+    91.67% { transform: translate(19.56vw, 41.09vh) rotate(-6.45deg); }
+    93.75% { transform: translate(27.11vw, 42.92vh) rotate(-4.91deg); }
+    95.83% { transform: translate(34.98vw, 46.70vh) rotate(-2.63deg); }
+    97.92% { transform: translate(42.40vw, 51.28vh) rotate(0.05deg); }
+    100% { transform: translate(48.69vw, 54.70vh) rotate(2.73deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .butterfly-fly { animation: none !important; }
+  }
+
+  /* ---------- Form card ---------- */
+  .apply-card {
+    width: 100%;
+    max-width: 34rem;
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 1.75rem;
+    box-shadow: var(--shadow);
+    padding: 1.75rem;
+  }
+  @media (min-width: 640px) { .apply-card { padding: 2.75rem; } }
+
+  /* The fields are children of the <form>, not of .apply-card directly —
+     the gap has to live here or it never actually touches the fields. */
+  #applyForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+  @media (min-width: 640px) { #applyForm { gap: 2rem; } }
+
+  .field {
+    position: relative;
+    width: 100%;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    background: var(--field-fill);
+    border: 1px solid transparent;
+    border-radius: 1rem;
+    padding: 1.35rem 1.5rem;
+    font-family: inherit;
+    font-size: 0.98rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 180ms var(--ease-entrance), background 180ms var(--ease-entrance);
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  .field input:hover,
+  .field select:hover,
+  .field textarea:hover { border-color: var(--card-border); }
+  .field input::placeholder,
+  .field textarea::placeholder { color: var(--ink-faint); }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: rgba(231,17,32,0.45);
+    background: #ffffff;
+  }
+
+  .field select {
+    padding-right: 3rem;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .field select:invalid { color: var(--ink-faint); }
+  .field-chevron {
+    position: absolute;
+    right: 1.4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0.85rem;
+    height: 0.85rem;
+    pointer-events: none;
+    color: var(--ink-faint);
+  }
+
+  .field textarea {
+    min-height: 9rem;
+    resize: vertical;
+    line-height: 1.7;
+  }
+
+  .apply-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.75rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--card-border);
+  }
+
+  .apply-footer-brand {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .apply-footer-brand sup { font-size: 0.6em; }
+
+  .btn-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.9rem;
+    border-radius: 9999px;
+    background: var(--yellow);
+    padding: 0 1.6rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--ink);
+    box-shadow: 0 12px 28px rgba(252,203,0,0.35);
+    transition: background 200ms var(--ease-entrance), transform 200ms var(--ease-entrance);
+  }
+  .btn-pill:hover { background: var(--yellow-dark); transform: translateY(-1px); }
+  .btn-pill:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(252,203,0,0.45); }
+  .btn-pill[disabled] { opacity: 0.6; pointer-events: none; }
+
+  .form-note {
+    margin-top: 1.25rem;
+    text-align: center;
+    font-size: 0.86rem;
+    color: var(--ink-faint);
+  }
+  .form-note a { color: var(--red); font-weight: 600; }
+  .form-note a:hover { text-decoration: underline; }
+
+  .success-msg {
+    display: none;
+    text-align: center;
+    font-family: "Lora", serif;
+    font-size: 1.05rem;
+    color: var(--ink);
+    padding: 1rem 0 0;
+  }
+  .success-msg.is-visible { display: block; }
+  .apply-card.is-submitted .field,
+  .apply-card.is-submitted .apply-footer { display: none; }
+
+  @keyframes reveal-up {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .page-heading, .page-sub, .apply-grid { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
+
+  /* ---------- Footer (shared with the main site) ---------- */
+  .site-footer { position: relative; background: var(--bg-alt); border-top: 1px solid var(--card-border); }
+  .footer-inner {
+    max-width: 76rem;
+    margin: 0 auto;
+    padding: 4.5rem 1.25rem 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.75rem;
+  }
+  @media (min-width: 640px) { .footer-inner { padding: 5.5rem 2.5rem 0; } }
+  @media (min-width: 768px) { .footer-inner { grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; } }
+  .footer-brand .brand-mark { font-size: clamp(1.4rem, 2.2vw, 1.7rem); }
+  .footer-blurb {
+    margin-top: 1.1rem;
+    max-width: 24rem;
+    font-family: "Lora", serif;
+    font-size: 0.98rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+  .footer-col { display: flex; flex-direction: column; gap: 0.9rem; }
+  .footer-heading {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .footer-col a {
+    font-size: 0.96rem;
+    font-weight: 500;
+    color: var(--ink);
+    width: fit-content;
+    transition: color 180ms var(--ease-entrance);
+  }
+  .footer-col a:hover { color: var(--red); }
+  .footer-bottom {
+    max-width: 76rem;
+    margin: 4rem auto 0;
+    padding: 1.75rem 1.25rem;
+    border-top: 1px solid var(--card-border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+    text-align: center;
+  }
+  @media (min-width: 640px) { .footer-bottom { padding: 1.75rem 2.5rem; flex-direction: row; justify-content: space-between; text-align: left; } }
+  .footer-bottom p { font-size: 0.8rem; color: var(--ink-faint); }
+  .footer-credit { font-size: 0.8rem; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="butterfly-duotone" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="
+        0.2126 0.7152 0.0722 0 0
+        0.2126 0.7152 0.0722 0 0
+        0.2126 0.7152 0.0722 0 0
+        0 0 0 1 0" result="gray"/>
+      <feComponentTransfer in="gray">
+        <feFuncR type="table" tableValues="0.345 1"/>
+        <feFuncG type="table" tableValues="0.020 1"/>
+        <feFuncB type="table" tableValues="0.043 1"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+</svg>
+
+<div class="sprig-wrap" aria-hidden="true">
+  <div class="butterfly-fly">
+    <img class="butterfly-sprite" id="butterflySprite" src="assets/images/frames/frame-1.png" alt="">
+  </div>
+</div>
+
+<header class="mini-header">
+  <a class="brand" href="index.html">
+    <span class="sr-only">Loca Brands</span>
+    <span class="brand-mark" aria-hidden="true">L<span class="wm-o"></span>CA BRANDS</span>
+  </a>
+</header>
+
+<main class="page-wrap">
+  <h1 class="page-heading">Start a Project</h1>
+  <p class="page-sub">Tell us about your idea. We'll get back to you and start the conversation.</p>
+
+  <div class="apply-grid">
+
+    <div class="apply-card" id="applyCard">
+      <form id="applyForm" novalidate>
+        <div class="field">
+          <input type="text" name="name" placeholder="Your Name" required>
+        </div>
+        <div class="field">
+          <input type="email" name="email" placeholder="Your Official Email" required>
+        </div>
+        <div class="field">
+          <input type="text" name="location" placeholder="City, Country">
+        </div>
+        <div class="field">
+          <select name="engagement" required defaultValue="">
+            <option value="" disabled selected>Engagement Type</option>
+            <option value="on-demand">On-Demand Expertise</option>
+            <option value="end-to-end">End-to-End Brand Building</option>
+          </select>
+          <svg class="field-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="field">
+          <select name="source">
+            <option value="" disabled selected>How Did You Find Us?</option>
+            <option value="referral">Referral</option>
+            <option value="linkedin">LinkedIn</option>
+            <option value="instagram">Instagram</option>
+            <option value="search">Search</option>
+            <option value="other">Other</option>
+          </select>
+          <svg class="field-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="field">
+          <textarea name="message" placeholder="Tell us what you are building. (Optional)"></textarea>
+        </div>
+
+        <div class="apply-footer">
+          <span class="apply-footer-brand">Loca Brands<sup>&reg;</sup></span>
+          <button type="submit" class="btn-pill">Start a Project</button>
+        </div>
+      </form>
+
+      <p class="success-msg" id="successMsg">Thanks — we've got your details. Our team will be in touch shortly.</p>
+    </div>
+  </div>
+
+  <p class="form-note">Prefer email? Reach us directly at <a href="mailto:hello@locabrands.studio">hello@locabrands.studio</a></p>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a class="brand" href="index.html">
+        <span class="sr-only">Loca Brands</span>
+        <span class="brand-mark" aria-hidden="true">L<span class="wm-o"></span>CA BRANDS</span>
+      </a>
+      <p class="footer-blurb">A senior-led brand building studio. We build the Founder, the Brand, the Demand Engine — helping consumer brands launch, evolve and scale as one integrated system.</p>
+    </div>
+
+    <div class="footer-col">
+      <span class="footer-heading">Explore</span>
+      <a href="index.html#what-we-do">What We Do</a>
+      <a href="index.html#how-we-work">How We Work</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#difference">Our Difference</a>
+    </div>
+
+    <div class="footer-col">
+      <span class="footer-heading">Get In Touch</span>
+      <a href="mailto:hello@locabrands.studio">hello@locabrands.studio</a>
+      <a href="index.html#contact">Quick Contact</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2026 Loca Brands — Brand Building Studio. All rights reserved.</p>
+    <span class="footer-credit">Brand Strategy &middot; Identity &middot; Demand Engine</span>
+  </div>
+</footer>
+
+<script type="module">
+import Lenis from "lenis";
+
+const lenis = new Lenis({ smoothWheel: true });
+function raf(t) {
+  lenis.raf(t);
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+
+document.getElementById("applyForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const card = document.getElementById("applyCard");
+  card.classList.add("is-submitted");
+  document.getElementById("successMsg").classList.add("is-visible");
+});
+
+/* ---------- Butterfly flap: real 12-frame photo sequence, cycled on an interval ---------- */
+const butterflySprite = document.getElementById("butterflySprite");
+if (butterflySprite && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const FRAME_COUNT = 12;
+  const frameUrls = Array.from({ length: FRAME_COUNT }, (_, i) => `assets/images/frames/frame-${i + 1}.png`);
+  frameUrls.forEach((url) => { new Image().src = url; }); // preload so cycling never flashes/loads mid-swap
+
+  let frame = 0;
+  setInterval(() => {
+    frame = (frame + 1) % FRAME_COUNT;
+    butterflySprite.src = frameUrls[frame];
+  }, 55);
+}
+</script>
+
+</body>
+</html>
